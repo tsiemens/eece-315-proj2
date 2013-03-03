@@ -1,0 +1,7 @@
+The following lines should be in your .vimrc file 
+(located at ~/.vimrc):
+
+set tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab
+
+"Auto indentation
+set cindent
