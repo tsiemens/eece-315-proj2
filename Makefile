@@ -2,7 +2,7 @@
 CXX := g++
 
 #Executable to compile
-EXECUTABLE :=  
+EXECUTABLE := cpu-sch-sim 
 
 #Compiler Flags
 CFLAGS := -std=c++0x -Wall
@@ -18,11 +18,13 @@ OBJ := $(subst src/, obj/, $(SRC:.cpp=.o))
 
 #Rule to link executable
 $(addprefix bin/, $(EXECUTABLE)) : $(OBJ)
+	@mkdir -p bin/
 	$(CXX) $(LDFLAGS) -o $@ $(OBJ)
 
 #Rule to generate .d and .o files from .cpp files
 obj/%.o : src/%.cpp
-	$(CXX) $(CFLAGS) -o $@ -c -MT "$@" -MMD -MP $<
+	@mkdir -p obj/
+	$(CXX) $(CFLAGS) -o $@ -c -MMD -MP $<
 
 #include dependency files
 -include $(patsubst src/%.cpp, obj/%.d, $(SRC))  
