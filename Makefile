@@ -2,7 +2,7 @@
 CXX := g++
 
 #Executable to compile
-EXECUTABLE := CpuUtil
+EXECUTABLE :=  
 
 #Compiler Flags
 CFLAGS := -std=c++0x -Wall
