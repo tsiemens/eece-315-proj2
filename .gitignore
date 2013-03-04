@@ -9,10 +9,10 @@
 *.a
 *.so
 *.gch
+
 #libtool outputs
 *.la
 
-#compiled (extension-less) runnables
-shell
-testrun
-
+#Objects and binaries
+bin/
+obj/
