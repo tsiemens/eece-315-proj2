@@ -18,7 +18,7 @@ public:
 	 */
 	PCB( int pid, int priority, vector<int> bursts );
 
-	//Desctructor
+	//Destructor
 	~PCB();
 
 	/* @return: the pid for the process
