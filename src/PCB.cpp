@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <string>
-#include "PCB.hpp"
+#include "PCB.h"
 
 using namespace std;
 
@@ -17,6 +17,7 @@ PCB::PCB(int pid, int priority, vector<int> bursts){
 	mAgePriority = 0;
 	mCurrentBurst = 0;
 	mWaitTime = 0;
+	mAvPrevBurst = 0;
 	mBursts = bursts;
 
 	if( isDone() ){
@@ -66,6 +67,7 @@ bool PCB::decTimeRemInBurst(){
 	mTimeRemInBurst--;
 	if( mTimeRemInBurst == 0 ){
 		mCurrentBurst++;
+		mTimeRemInBurst = mBursts[mCurrentBurst];
 		return true;	
 	}else{
 		return false;
@@ -80,3 +82,10 @@ bool PCB::isDone(){
 	}
 }
 
+int PCB::getAvPrevBurst(){
+	return mAvPrevBurst;
+}
+
+void PCB::setAvPrevBurst(int average){
+	mAvPrevBurst = average;
+}
