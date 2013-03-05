@@ -14,7 +14,7 @@ using namespace std;
 PCB::PCB(int pid, int priority, vector<int> bursts){
 	mPID = pid;
 	mBasePriority = priority;
-	mAgePriority = 0;
+	mRelPriority = 0;
 	mCurrentBurst = 0;
 	mWaitTime = 0;
 	mAvPrevBurst = 0;
@@ -44,15 +44,18 @@ void PCB::incWaitTime(){
 }
 
 int PCB::getPriority(){
-	return mBasePriority + mAgePriority;
+	return mBasePriority + mRelPriority;
 }
 
-void PCB::resetPriority(){
-	mAgePriority = 0;
+void PCB::resetRelPriority(){
+	mRelPriority = 0;
 }
 
-void PCB::incAgePriority(int add){
-	mAgePriority += add;
+void PCB::changeRelPriority(int val){
+	mRelPriority += val;
+	if(mRelPriority < 0){
+		mRelPriority = 0;
+	}
 }
 
 int PCB::getCurrentBurst(){
@@ -75,7 +78,7 @@ bool PCB::decTimeRemInBurst(){
 }
 
 bool PCB::isDone(){
-	if( mCurrentBurst >= mBursts.size() ){
+	if( mCurrentBurst >= (signed)mBursts.size() ){
 		return true;
 	}else{
 		return false;
@@ -88,4 +91,13 @@ int PCB::getAvPrevBurst(){
 
 void PCB::setAvPrevBurst(int average){
 	mAvPrevBurst = average;
+}
+
+int PCB::getTotalExecTime(){
+	int total = 0;
+	for(int i = 0; i < (signed)mBursts.size(); i++ ){
+		total += mBursts[i];
+		i++;
+	}
+	return total;
 }
