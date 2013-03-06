@@ -11,9 +11,9 @@
 using namespace std;
 
 FIFOScheduler::FIFOScheduler(){
-	setDoesTimeSlice(false);
-	setDoesInterrupt(false);
-	setQuantumTime(DOES_NOT_TIME_SLICE);
+	mDoesTimeSlice = false;
+	mDoesInterrupt = false;
+	mQuantumTime = DOES_NOT_TIME_SLICE;
 	resetTimeSliceTimer();
 }
 

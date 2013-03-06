@@ -12,8 +12,10 @@ using namespace std;
 
 class Scheduler{
 
-public:
+	//Default Constructor
+protected: Scheduler();
 
+public:
 	/* Selects the next process to be run in the CPU
 	 * @return: the index in the ready queue of the process to be run next.
 	 *          should return -1 if the queue is empty.
@@ -62,7 +64,7 @@ public:
 	//Returned from getQuantumTime if does not time slice
 	static const int DOES_NOT_TIME_SLICE = 0;
 
-private:
+protected:
 	int mQuantumTime;
 	int mTimeSliceTimer;
 	bool mDoesTimeSlice;
