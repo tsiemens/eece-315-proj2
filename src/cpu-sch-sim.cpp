@@ -1,3 +1,10 @@
+/* cpu-sch-sim.cpp
+ * Main loop for CPU scheduler
+ *
+ * EECE 315
+ * Group B5
+ */
+
 #include<iostream>
 #include<fstream>
 #include<string>
