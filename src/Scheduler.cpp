@@ -2,7 +2,7 @@
  * Abstract class for the schedulers
  *
  * EECE 315
- * Group B5
+ * Group BB4
  */
 
 #include "Scheduler.h"

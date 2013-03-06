@@ -2,7 +2,7 @@
  * Main loop for CPU scheduler
  *
  * EECE 315
- * Group B5
+ * Group BB4
  */
 
 #include<iostream>
