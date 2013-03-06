@@ -4,6 +4,8 @@
  * EECE 315
  * Group B5
  */
+#ifndef PCB_H
+#define	PCB_H
 #include<vector>
 
 using namespace std;
@@ -89,3 +91,4 @@ private:
 	int mAvPrevBurst;
 	vector <int> mBursts;
 };
+#endif
