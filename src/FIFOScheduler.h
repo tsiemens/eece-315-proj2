@@ -2,7 +2,7 @@
  * Scheduler which uses the FIFO algorithm
  *
  * EECE 315
- * Group B5
+ * Group BB4
  */
 
 #ifndef FIFO_SCHEDULER_H
