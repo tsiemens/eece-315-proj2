@@ -1,0 +1,91 @@
+/* PCB.h
+ * Class for Process Control Block
+ *
+ * EECE 315
+ * Group B5
+ */
+#include<vector>
+
+using namespace std;
+
+class PCB{
+
+public:
+	/*Constructor
+	 * @param: pid - the process id
+	 * @param: priority - the base priority for the process
+	 * @param: busrts - a vector containing all the cpu and io bursts
+	 */
+	PCB( int pid, int priority, vector<int> bursts );
+
+	//Destructor
+	~PCB();
+
+	/* @return: the pid for the process
+	 */
+	int getPID();
+
+	/* @return: the total time the process as been waiting.
+	 */
+	int getWaitTime();
+
+	/* Increments the time the process has been waiting by 1
+	 */
+	void incWaitTime();
+
+	/* @return: the net priority of the process (base + aged)
+	 */
+	int getPriority();
+
+	/* Resets the relative priority of the process to zero
+	 */
+	void resetRelPriority();
+
+	/* Increments the relative priority of the process
+	 * @param: val - the about the aged priority should be changed by
+	 *         Accepts negative numbers
+	 */
+	void changeRelPriority(int val);
+
+	/* @return: the # of the current burst of the process (starts at zero)
+	 */
+	int getCurrentBurst();
+
+	/* @return: the time remaining on the current burst
+	 */
+	int getTimeRemInBurst();
+
+	/* Decrements the time remaining in the current burst by 1.
+	 * If the current burst has ended, the process is set 
+	 * to start the next burst.
+	 * @return: true if the current burst is now over, false otherwise
+	 */
+	bool decTimeRemInBurst();
+
+	/* @return: true if the process has no more bursts, false otherwise.
+	 */
+	bool isDone();
+
+	/* @return: the average duration of CPU bursts
+	 */
+	int getAvPrevBurst();
+
+	/* Sets the average burst time for the process
+	 * @param: average - the average to set
+	 */
+	void setAvPrevBurst(int average);
+
+	/* @return: the total time the process will or has spent in CPU burst
+	 */
+	int getTotalExecTime();
+
+private:
+	int mPID;
+	int mWaitTime;
+	int mBasePriority;
+	int mRelPriority;
+	int mCurrentBurst;
+	int mTimeRemInBurst;
+	int mAvPrevBurst;
+	vector <int> mBursts;
+};
