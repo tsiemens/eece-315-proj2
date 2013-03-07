@@ -2,6 +2,9 @@
 .*.swp
 .*.swo
 
+# vim session files
+*.vim
+
 # Temp files
 *~
 
