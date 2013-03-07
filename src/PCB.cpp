@@ -10,26 +10,34 @@
 #include "PCB.h"
 
 using namespace std;
-
-PCB::PCB(int pid, int priority, vector<int> bursts){
-	mPID = pid;
-	mBasePriority = priority;
+PCB::PCB(){
 	mRelPriority = 0;
 	mCurrentBurst = 0;
 	mWaitTime = 0;
 	mAvPrevBurst = 0;
-	mBursts = bursts;
-
-	if( isDone() ){
-		mTimeRemInBurst = 0;
-	}else{
-		mTimeRemInBurst = mBursts[0];
-	}
+	mTimeRemInBurst = 0;
 }
 
 PCB::~PCB(){
 	mBursts.clear();
 }
+
+void PCB::setPCB(int pid, int TARQ, int priority, int TNCPU, vector<int> bursts){
+	mPID = pid;
+	TARQ = TARQ;
+	mBasePriority = priority;
+	TNCPU = TNCPU;
+	mBursts = bursts;
+	
+	if( isDone() ){
+		mTimeRemInBurst = 0;
+	}else{
+		mTimeRemInBurst = mBursts[0];
+	}
+
+
+}
+
 
 int PCB::getPID(){
 	return mPID;
