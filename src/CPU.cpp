@@ -10,7 +10,7 @@
 
 int CPU::getStatus(){
         int TimeRemInBurst = mProcess->getTimeRemInBurst();
-        if(TimeRemInBurst == 0){
+        if(TimeRemInBurst <= 0){
                 mProcessStatus = NOT_RUNNING;
         }else{
                 mProcessStatus = RUNNING;
