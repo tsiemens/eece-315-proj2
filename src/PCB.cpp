@@ -2,7 +2,7 @@
  * Class for Process Control Block
  *
  * EECE 315
- * Group B5
+ * Group BB4
  */
 
 #include "PCB.h"
