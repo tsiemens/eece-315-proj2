@@ -5,21 +5,26 @@
  * Group BB4
  */
 
-#include <iostream>
-#include <string>
 #include "PCB.h"
 
-using namespace std;
-
-PCB::PCB(int pid, int priority, vector<int> bursts){
-	mPID = pid;
-	mBasePriority = priority;
+PCB::PCB(){
 	mRelPriority = 0;
 	mCurrentBurst = 0;
 	mWaitTime = 0;
 	mAvPrevBurst = 0;
-	mBursts = bursts;
+	mTimeRemInBurst = 0;
+}
 
+PCB::~PCB(){
+	mBursts.clear();
+}
+
+void PCB::setPCB(int pid, int TARQ, int priority, vector<int> bursts){
+	mPID = pid;
+	mTARQ = TARQ;
+	mBasePriority = priority;
+	mBursts = bursts;
+	
 	if( isDone() ){
 		mTimeRemInBurst = 0;
 	}else{
@@ -27,9 +32,6 @@ PCB::PCB(int pid, int priority, vector<int> bursts){
 	}
 }
 
-PCB::~PCB(){
-	mBursts.clear();
-}
 
 int PCB::getPID(){
 	return mPID;
@@ -95,7 +97,7 @@ void PCB::setAvPrevBurst(int average){
 
 int PCB::getTotalExecTime(){
 	int total = 0;
-	for(int i = 0; i < (signed)mBursts.size(); i++ ){
+	for(unsigned int i = 0; i < mBursts.size(); i++ ){
 		total += mBursts[i];
 		i++;
 	}
