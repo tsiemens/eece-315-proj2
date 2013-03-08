@@ -9,25 +9,30 @@
 #define _PCB_HPP_
 #include <vector>
 #include <list>
+#include "PCB.h"
+#include "Scheduler.h"
+#include <iostream>
 
 using namespace std;
 
 class ReadyQueue{
 
 	public:
-		// Default Constructor
-		ReadyQueue(Scheduler* scheduler);
+		// Constructor
+		ReadyQueue();
 
 		// Destructor
 		~ReadyQueue();
 
 		
 		//	@Input: PCB to be added to ready Queue
-		//	@Output: If preemtive with immediate switch, 
-		PCB* Insert(PCB* process);
+		void Insert(PCB* process);
 
-		// @return: PCB the scheduler removes and return from Queue. 
-		PCB* Get() const;
+		// initialize iterator 
+		void begin();
+
+		// get next PCB in ready queue
+		PCB* getNext();
 
 		// Updates PCB time variables
 		void Update();
@@ -38,7 +43,8 @@ class ReadyQueue{
 	private:
 
 	list<PCB*> mQueue;
-	Scheduler* mScheduler;
-	bool mDoesInterrupt;
+	list<PCB*>::iterator i;
 };
+
+#endif
 
