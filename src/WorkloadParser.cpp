@@ -1,22 +1,22 @@
 #include<iostream>
 #include<sstream>
-#include "workloadParser.h"
+#include<sys/stat.h>
+#include "WorkloadParser.h"
 
-bool workloadParser::validFileName(string filename){
-	ifstream testFile;
-
-	testFile.open(filename.c_str());
-	if(testFile.is_open()){
-		testFile.close();
+bool WorkloadParser::validFileName(string filename){
+	struct stat st_buf;
+	
+	stat(filename.c_str(), &st_buf);
+	
+	if(S_ISREG(st_buf.st_mode))
 		return true;
-	}
 	else{
-		cout<<"Please enter a valid workload file name: ";
+		cout<<"Please enter a valid workload file name: ";	
 		return false;
 	}
 }
 
-vector<PCB*> workloadParser::parseWorkload(string filename){
+vector<PCB*> WorkloadParser::parseWorkload(string filename){
 	string line;
 	vector<PCB*> processes;
 	
@@ -29,7 +29,7 @@ vector<PCB*> workloadParser::parseWorkload(string filename){
 	return processes;
 }
 
-PCB* workloadParser::parseLine(string line){
+PCB* WorkloadParser::parseLine(string line){
 	PCB *process = new PCB;
 	string token;
 	vector<string> fields;

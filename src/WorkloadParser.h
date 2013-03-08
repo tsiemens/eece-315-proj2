@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class workloadParser{
+class WorkloadParser{
 	public:
 		static bool validFileName(string filename);
 		vector<PCB*> parseWorkload(string filename);

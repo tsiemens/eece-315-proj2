@@ -10,20 +10,20 @@
 #include<string>
 #include<vector>
 #include "PCB.h"
-#include "workloadParser.h"
+#include "WorkloadParser.h"
 
 int main(){
 	using namespace std;
 	int algorithm_index;
-	workloadParser parser;
+	WorkloadParser parser;
 	vector<PCB*> processes;
 	string filename;
 	ifstream inFile;
 	
-	cout<<"Please enter workload filename: ";
+	cout<<"Please enter workload file name: ";
 	do{
 		cin>>filename;
-	}while(!(workloadParser::validFileName(filename)));
+	}while(!(WorkloadParser::validFileName(filename)));
 
 	processes = parser.parseWorkload(filename);
 
