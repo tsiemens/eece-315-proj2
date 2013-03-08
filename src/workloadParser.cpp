@@ -1,6 +1,6 @@
 #include<iostream>
 #include<sstream>
-#include "Workload_Parser.h"
+#include "workloadParser.h"
 
 bool workloadParser::validFileName(string filename){
 	ifstream testFile;

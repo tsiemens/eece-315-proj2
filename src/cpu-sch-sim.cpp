@@ -3,7 +3,7 @@
 #include<string>
 #include<vector>
 #include "PCB.h"
-#include "Workload_Parser.h"
+#include "workloadParser.h"
 
 int main(){
 	using namespace std;
