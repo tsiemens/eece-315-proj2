@@ -8,6 +8,9 @@
 #ifndef SCHEDULER_H
 #define	SCHEDULER_H
 
+#include "PCB.h"
+#include <list>
+
 using namespace std;
 
 class Scheduler{
@@ -20,7 +23,7 @@ public:
 	 * @return: pointer to the process to be run next.
 	 *          should return NULL if the queue is empty.
 	 */
-	virtual PCB* schedule(/*ReadyQueue rq*/) = 0;
+	virtual PCB* schedule(list<PCB*> queue) = 0;
 
 	/* @param: value to set the quantum time to. Must be >= 1.
 	 */

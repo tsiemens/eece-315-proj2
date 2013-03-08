@@ -17,11 +17,11 @@ FIFOScheduler::FIFOScheduler(){
 	resetTimeSliceTimer();
 }
 
-PCB* FIFOScheduler::schedule(/*ReadyQueue rq*/){
+PCB* FIFOScheduler::schedule(list<PCB*> queue){
 	if(/*Is queue empty?*/true){
-		return this->NULL;
+		return NULL;
 	}else{
-		return NULL; //For now
+		return NULL; //For now 
 	}
 }
 

@@ -8,6 +8,8 @@
 #ifndef FIFO_SCHEDULER_H
 #define	FIFO_SCHEDULER_H
 
+#include <iostream>
+#include <list>
 #include "PCB.h"
 #include "Scheduler.h"
 
@@ -26,7 +28,7 @@ public:
 	 * @return: pointer to the process to be run next
 	 *          returns NULL if empty
 	 */
-	PCB* schedule(/*ReadyQueue rq*/);
+	PCB* schedule(list<PCB*> queue);
 
 };
 #endif
