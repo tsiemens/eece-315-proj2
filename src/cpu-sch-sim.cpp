@@ -13,7 +13,7 @@ int main(){
 	string filename;
 	ifstream inFile;
 	
-	cout<<"Please enter workload filename: ";
+	cout<<"Please enter workload file name: ";
 	do{
 		cin>>filename;
 	}while(!(workloadParser::validFileName(filename)));

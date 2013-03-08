@@ -1,17 +1,17 @@
 #include<iostream>
 #include<sstream>
+#include<sys/stat.h>
 #include "workloadParser.h"
 
 bool workloadParser::validFileName(string filename){
-	ifstream testFile;
-
-	testFile.open(filename.c_str());
-	if(testFile.is_open()){
-		testFile.close();
+	struct stat st_buf;
+	
+	stat(filename.c_str(), &st_buf);
+	
+	if(S_ISREG(st_buf.st_mode))
 		return true;
-	}
 	else{
-		cout<<"Please enter a valid workload file name: ";
+		cout<<"Please enter a valid workload file name: ";	
 		return false;
 	}
 }
