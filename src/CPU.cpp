@@ -35,5 +35,6 @@ PCB* CPU::getProcess(){
 }
 
 void CPU::setProcess(PCB *process){
+	mProcessStatus = RUNNING;
         mProcess = process;
 }
