@@ -1,9 +1,9 @@
 #include<iostream>
 #include<sstream>
 #include<sys/stat.h>
-#include "workloadParser.h"
+#include "WorkloadParser.h"
 
-bool workloadParser::validFileName(string filename){
+bool WorkloadParser::validFileName(string filename){
 	struct stat st_buf;
 	
 	stat(filename.c_str(), &st_buf);
@@ -16,7 +16,7 @@ bool workloadParser::validFileName(string filename){
 	}
 }
 
-vector<PCB*> workloadParser::parseWorkload(string filename){
+vector<PCB*> WorkloadParser::parseWorkload(string filename){
 	string line;
 	vector<PCB*> processes;
 	
@@ -29,7 +29,7 @@ vector<PCB*> workloadParser::parseWorkload(string filename){
 	return processes;
 }
 
-PCB* workloadParser::parseLine(string line){
+PCB* WorkloadParser::parseLine(string line){
 	PCB *process = new PCB;
 	string token;
 	vector<string> fields;
