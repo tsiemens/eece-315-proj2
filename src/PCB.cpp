@@ -5,11 +5,8 @@
  * Group B5
  */
 
-#include <iostream>
-#include <string>
 #include "PCB.h"
 
-using namespace std;
 PCB::PCB(){
 	mRelPriority = 0;
 	mCurrentBurst = 0;
@@ -22,11 +19,10 @@ PCB::~PCB(){
 	mBursts.clear();
 }
 
-void PCB::setPCB(int pid, int TARQ, int priority, int TNCPU, vector<int> bursts){
+void PCB::setPCB(int pid, int TARQ, int priority, vector<int> bursts){
 	mPID = pid;
-	TARQ = TARQ;
+	mTARQ = TARQ;
 	mBasePriority = priority;
-	TNCPU = TNCPU;
 	mBursts = bursts;
 	
 	if( isDone() ){
@@ -34,8 +30,6 @@ void PCB::setPCB(int pid, int TARQ, int priority, int TNCPU, vector<int> bursts)
 	}else{
 		mTimeRemInBurst = mBursts[0];
 	}
-
-
 }
 
 
@@ -103,7 +97,7 @@ void PCB::setAvPrevBurst(int average){
 
 int PCB::getTotalExecTime(){
 	int total = 0;
-	for(int i = 0; i < (signed)mBursts.size(); i++ ){
+	for(unsigned int i = 0; i < mBursts.size(); i++ ){
 		total += mBursts[i];
 		i++;
 	}

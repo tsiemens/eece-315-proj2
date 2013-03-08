@@ -22,10 +22,9 @@ class PCB{
 		 /* @param: pid - the process id
 		 * @param: TARQ - time of arrival on queue
 		 * @param: priority - the base priority for the process
-		 * @param: TNCPU - total number of CPU bursts
 		 * @param: busrts - a vector containing all the cpu and io bursts
 		 */
-		void setPCB( int pid, int TARQ, int priority, int TNCPU, vector<int> bursts );
+		void setPCB( int pid, int TARQ, int priority, vector<int> bursts );
 
 		/* @return: the pid for the process
 		 */
@@ -87,8 +86,7 @@ class PCB{
 
 	private:
 		int mPID;
-		int TARQ;
-		int TNCPU;
+		int mTARQ;
 		int mWaitTime;
 		int mBasePriority;
 		int mRelPriority;

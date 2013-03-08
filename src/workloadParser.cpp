@@ -2,12 +2,12 @@
 #include<sstream>
 #include "Workload_Parser.h"
 
-bool Workload_Parser::valid_file_name(string filename){
-	ifstream testfile;
+bool workloadParser::validFileName(string filename){
+	ifstream testFile;
 
-	testfile.open(filename.c_str());
-	if(testfile.is_open()){
-		testfile.close();
+	testFile.open(filename.c_str());
+	if(testFile.is_open()){
+		testFile.close();
 		return true;
 	}
 	else{
@@ -16,20 +16,20 @@ bool Workload_Parser::valid_file_name(string filename){
 	}
 }
 
-vector<PCB*> Workload_Parser::parse_workload(string filename){
+vector<PCB*> workloadParser::parseWorkload(string filename){
 	string line;
 	vector<PCB*> processes;
 	
-	infile.open(filename.c_str());
-	while(getline(infile, line)){
-		processes.push_back(parse_line(line));
+	inFile.open(filename.c_str());
+	while(getline(inFile, line)){
+		processes.push_back(parseLine(line));
 	}
 
-	infile.close();
+	inFile.close();
 	return processes;
 }
 
-PCB* Workload_Parser::parse_line(string line){
+PCB* workloadParser::parseLine(string line){
 	PCB *process = new PCB;
 	string token;
 	vector<string> fields;
@@ -42,6 +42,6 @@ PCB* Workload_Parser::parse_line(string line){
 	for(unsigned int i=4; i<fields.size();i++)
 		bursts.push_back(stoi(fields[i]));
 		
-	process->setPCB(stoi(fields[0]), stoi(fields[1]), stoi(fields[2]), stoi(fields[3]), bursts);
+	process->setPCB(stoi(fields[0]), stoi(fields[1]), stoi(fields[2]), bursts);
 	return process;
 }

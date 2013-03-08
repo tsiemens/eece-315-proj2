@@ -8,17 +8,17 @@
 int main(){
 	using namespace std;
 	int algorithm_index;
-	Workload_Parser parser;
+	workloadParser parser;
 	vector<PCB*> processes;
 	string filename;
-	ifstream infile;
+	ifstream inFile;
 	
 	cout<<"Please enter workload filename: ";
 	do{
 		cin>>filename;
-	}while(!(Workload_Parser::valid_file_name(filename)));
+	}while(!(workloadParser::validFileName(filename)));
 
-	processes = parser.parse_workload(filename);
+	processes = parser.parseWorkload(filename);
 
 	cout<<endl<<"\t"<<"1) FCFS 2) RR 3) Polite Premptive Priority 4) Impatient Premptive Priority 5) Non Premprive Priority 6) SJF 7) SPB"<<endl<<endl;	
 	cout<<"Select scheduling algorithm:";
