@@ -12,83 +12,87 @@ using namespace std;
 
 class PCB{
 
-public:
-	/*Constructor
-	 * @param: pid - the process id
-	 * @param: priority - the base priority for the process
-	 * @param: busrts - a vector containing all the cpu and io bursts
-	 */
-	PCB( int pid, int priority, vector<int> bursts );
+	public:
+		//Default Constructor	
+		PCB();
 
-	//Destructor
-	~PCB();
+		//Destructor
+		~PCB();
 
-	/* @return: the pid for the process
-	 */
-	int getPID();
+		 /* @param: pid - the process id
+		 * @param: TARQ - time of arrival on queue
+		 * @param: priority - the base priority for the process
+		 * @param: busrts - a vector containing all the cpu and io bursts
+		 */
+		void setPCB( int pid, int TARQ, int priority, vector<int> bursts );
 
-	/* @return: the total time the process as been waiting.
-	 */
-	int getWaitTime();
+		/* @return: the pid for the process
+		 */
+		int getPID();
 
-	/* Increments the time the process has been waiting by 1
-	 */
-	void incWaitTime();
+		/* @return: the total time the process as been waiting.
+		 */
+		int getWaitTime();
 
-	/* @return: the net priority of the process (base + aged)
-	 */
-	int getPriority();
+		/* Increments the time the process has been waiting by 1
+		 */
+		void incWaitTime();
 
-	/* Resets the relative priority of the process to zero
-	 */
-	void resetRelPriority();
+		/* @return: the net priority of the process (base + aged)
+		 */
+		int getPriority();
 
-	/* Increments the relative priority of the process
-	 * @param: val - the about the aged priority should be changed by
-	 *         Accepts negative numbers
-	 */
-	void changeRelPriority(int val);
+		/* Resets the relative priority of the process to zero
+		 */
+		void resetRelPriority();
 
-	/* @return: the # of the current burst of the process (starts at zero)
-	 */
-	int getCurrentBurst();
+		/* Increments the relative priority of the process
+		 * @param: val - the about the aged priority should be changed by
+		 *         Accepts negative numbers
+		 */
+		void changeRelPriority(int val);
 
-	/* @return: the time remaining on the current burst
-	 */
-	int getTimeRemInBurst();
+		/* @return: the # of the current burst of the process (starts at zero)
+		 */
+		int getCurrentBurst();
 
-	/* Decrements the time remaining in the current burst by 1.
-	 * If the current burst has ended, the process is set 
-	 * to start the next burst.
-	 * @return: true if the current burst is now over, false otherwise
-	 */
-	bool decTimeRemInBurst();
+		/* @return: the time remaining on the current burst
+		 */
+		int getTimeRemInBurst();
 
-	/* @return: true if the process has no more bursts, false otherwise.
-	 */
-	bool isDone();
+		/* Decrements the time remaining in the current burst by 1.
+		 * If the current burst has ended, the process is set 
+		 * to start the next burst.
+		 * @return: true if the current burst is now over, false otherwise
+		 */
+		bool decTimeRemInBurst();
 
-	/* @return: the average duration of CPU bursts
-	 */
-	int getAvPrevBurst();
+		/* @return: true if the process has no more bursts, false otherwise.
+		 */
+		bool isDone();
 
-	/* Sets the average burst time for the process
-	 * @param: average - the average to set
-	 */
-	void setAvPrevBurst(int average);
+		/* @return: the average duration of CPU bursts
+		 */
+		int getAvPrevBurst();
 
-	/* @return: the total time the process will or has spent in CPU burst
-	 */
-	int getTotalExecTime();
+		/* Sets the average burst time for the process
+		 * @param: average - the average to set
+		 */
+		void setAvPrevBurst(int average);
 
-private:
-	int mPID;
-	int mWaitTime;
-	int mBasePriority;
-	int mRelPriority;
-	int mCurrentBurst;
-	int mTimeRemInBurst;
-	int mAvPrevBurst;
-	vector <int> mBursts;
+		/* @return: the total time the process will or has spent in CPU burst
+		 */
+		int getTotalExecTime();
+
+	private:
+		int mPID;
+		int mTARQ;
+		int mWaitTime;
+		int mBasePriority;
+		int mRelPriority;
+		int mCurrentBurst;
+		int mTimeRemInBurst;
+		int mAvPrevBurst;
+		vector <int> mBursts;
 };
 #endif
