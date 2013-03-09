@@ -12,10 +12,7 @@
 #include "PCB.h"
 #include "WorkloadParser.h"
 #include "Scheduler.h"
-#include "FIFOScheduler.h"
-
-enum AlgType { FCFS = 1, RR = 2, PPP = 3, IPP = 4, 
-               NPP = 5, SJF = 6, SPB = 7 };
+#include "SchedulerFactory.h"
 
 Scheduler* createScheduler(int algIndex);
 
@@ -33,7 +30,7 @@ int main(){
 		cin>>filename;
 	}while(!(WorkloadParser::validFileName(filename)));
 	*/
-	filename = "workloads/";
+	filename = "workloads/testWorkload1.txt";
 	processes = parser.parseWorkload(filename);
 
 	/*Get the algorithm to be used*/
@@ -45,7 +42,8 @@ int main(){
 		cout<<"Select scheduling algorithm:";
 		cin>>algorithmIndex;
 	}
-	Scheduler* scheduler = createScheduler(algorithmIndex);
+	SchedulerFactory schFactory;
+	Scheduler* scheduler = schFactory.makeScheduler(algorithmIndex);
 
 	/*Make Ready queue*/
 	/*Make IO queue*/
@@ -76,25 +74,3 @@ int main(){
 	processes.clear();
 	return 0;
 }
-
-
-/* Depending on the user input, creates the appropriate scheduler type
- * @param: algIndex - the algorithm. Should be number defined by AlgType
- * @return: pointer to a Scheduler. Null if an error occurs.
- */
-Scheduler* createScheduler(int algIndex){
-	Scheduler* scheduler;
-	switch(algIndex){
-		case FCFS:
-			scheduler = new FIFOScheduler();
-			break;
-		//Others here
-		default:
-			cout<<"Error occured getting algorithm"<<endl;
-			scheduler = NULL;
-			break;
-	}
-	return scheduler;
-}
-
-

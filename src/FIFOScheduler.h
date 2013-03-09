@@ -11,6 +11,7 @@
 #include <iostream>
 #include <list>
 #include "PCB.h"
+#include "ReadyQueue.h"
 #include "Scheduler.h"
 
 using namespace std;
@@ -28,7 +29,7 @@ public:
 	 * @return: pointer to the process to be run next
 	 *          returns NULL if empty
 	 */
-	PCB* schedule(list<PCB*> queue);
+	PCB* schedule(ReadyQueue* q);
 
 };
 #endif
