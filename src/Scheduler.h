@@ -10,7 +10,6 @@
 
 #include "PCB.h"
 #include "ReadyQueue.h"
-#include <list>
 
 using namespace std;
 
