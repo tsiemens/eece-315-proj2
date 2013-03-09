@@ -9,7 +9,6 @@
 #define	FIFO_SCHEDULER_H
 
 #include <iostream>
-#include <list>
 #include "PCB.h"
 #include "ReadyQueue.h"
 #include "Scheduler.h"
