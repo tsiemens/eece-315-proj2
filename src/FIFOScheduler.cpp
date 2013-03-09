@@ -6,7 +6,6 @@
  */
 
 #include "FIFOScheduler.h"
-//#include "ReadyQueue.h"
 
 using namespace std;
 
@@ -17,11 +16,12 @@ FIFOScheduler::FIFOScheduler(){
 	resetTimeSliceTimer();
 }
 
-int FIFOScheduler::schedule(/*ReadyQueue rq*/){
-	if(/*Is queue empty?*/true){
-		return this->QUEUE_EMPTY;
-	}else{
-		return 0;
+PCB* FIFOScheduler::schedule(ReadyQueue* q){
+	q->begin();
+	PCB* nextProcess = q->getNext();
+	if(nextProcess != NULL){
+		q->remove(nextProcess);
 	}
+	return nextProcess;
 }
 

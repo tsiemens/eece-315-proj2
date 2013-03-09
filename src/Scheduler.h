@@ -8,6 +8,9 @@
 #ifndef SCHEDULER_H
 #define	SCHEDULER_H
 
+#include "PCB.h"
+#include "ReadyQueue.h"
+
 using namespace std;
 
 class Scheduler{
@@ -17,10 +20,10 @@ protected: Scheduler();
 
 public:
 	/* Selects the next process to be run in the CPU
-	 * @return: the index in the ready queue of the process to be run next.
-	 *          should return -1 if the queue is empty.
+	 * @return: pointer to the process to be run next.
+	 *          should return NULL if the queue is empty.
 	 */
-	virtual int schedule(/*ReadyQueue rq*/) = 0;
+	virtual PCB* schedule(ReadyQueue* q) = 0;
 
 	/* @param: value to set the quantum time to. Must be >= 1.
 	 */
@@ -58,9 +61,6 @@ public:
 	void setDoesInterrupt(bool di);
 
 	/*Constants*/
-
-	//Returned from schedule if queue is empty
-	static const int QUEUE_EMPTY = -1;
 	//Returned from getQuantumTime if does not time slice
 	static const int DOES_NOT_TIME_SLICE = 0;
 

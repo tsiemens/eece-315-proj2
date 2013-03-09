@@ -10,7 +10,7 @@ ReadyQueue::~ReadyQueue() {
 
 // adds PCB to ready queue and resets rel priority
 // @input: PCB* to be added.
-void ReadyQueue::Insert(PCB* process) {
+void ReadyQueue::insert(PCB* process) {
 	process->resetRelPriority();
 	mQueue.push_back(process);
 
@@ -32,14 +32,25 @@ PCB* ReadyQueue::getNext() {
 }
 
 // update PCBs in update
-void ReadyQueue::Update() {
+void ReadyQueue::update() {
 
 	for (i = mQueue.begin(); i != mQueue.end(); i++)
 	{
 		(*i)->incWaitTime();
 		(*i)->changeRelPriority(1);
 	}
+}
 
+void ReadyQueue::remove(PCB* pcb) {
+	i = mQueue.begin();
+	bool found = false;
+	while( i != mQueue.end() || !found )
+	{
+		if((*i) == pcb){
+			mQueue.erase(i);
+			found = true;
+		}
+	}
 }
 
 
