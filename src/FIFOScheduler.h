@@ -8,6 +8,9 @@
 #ifndef FIFO_SCHEDULER_H
 #define	FIFO_SCHEDULER_H
 
+#include <iostream>
+#include "PCB.h"
+#include "ReadyQueue.h"
 #include "Scheduler.h"
 
 using namespace std;
@@ -22,10 +25,10 @@ public:
 
 	/* Selects the next process to be run in the CPU
 	 * Uses the First In First Out algorithm.
-	 * @return: the index in the ready queue of the process to be run next
-	 *          returns QUEUE_EMPTY if empty
+	 * @return: pointer to the process to be run next
+	 *          returns NULL if empty
 	 */
-	int schedule(/*ReadyQueue rq*/);
+	PCB* schedule(ReadyQueue* q);
 
 };
 #endif

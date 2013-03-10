@@ -5,12 +5,11 @@
  * Group BB4
  */
 
-#ifndef _PCB_HPP_
-#define _PCB_HPP_
+#ifndef READY_QUEUE_H
+#define READY_QUEUE_H
 #include <vector>
 #include <list>
 #include "PCB.h"
-#include "Scheduler.h"
 #include <iostream>
 
 using namespace std;
@@ -26,7 +25,7 @@ class ReadyQueue{
 
 		
 		//	@Input: PCB to be added to ready Queue
-		void Insert(PCB* process);
+		void insert(PCB* process);
 
 		// initialize iterator 
 		void begin();
@@ -35,9 +34,10 @@ class ReadyQueue{
 		PCB* getNext();
 
 		// Updates PCB time variables
-		void Update();
+		void update();
 
-
+		//Removes pcb from the ready queue if it exists in the ready queue
+		void remove(PCB* pcb);
 
 
 	private:
