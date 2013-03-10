@@ -23,6 +23,7 @@ int main(){
 	vector<PCB*> processes;
 	string filename;
 	ifstream inFile;
+	Scheduler* scheduler;
 	
 	cout<<"Please enter workload file name: ";
 	/* for testing smoothness
@@ -43,7 +44,14 @@ int main(){
 		cin>>algorithmIndex;
 	}
 	SchedulerFactory schFactory;
-	Scheduler* scheduler = schFactory.makeScheduler(algorithmIndex);
+	int quantumTime = 0;
+	if( algorithmIndex != FCFS ){
+		while( quantumTime <= 0 ){
+			cout<<"Please enter a value for quantum time:";
+			cin>>quantumTime;
+		}
+	}
+	scheduler = schFactory.makeScheduler(algorithmIndex, quantumTime);
 
 	/*Make Ready queue*/
 	/*Make IO queue*/
