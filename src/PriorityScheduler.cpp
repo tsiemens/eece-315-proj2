@@ -17,7 +17,8 @@ PCB* PriorityScheduler::schedule(ReadyQueue* q) {
 	PCB* currentProcess;
 	q->begin();
 	selectedProcess = q->getCurrent();
-	while (q->getCurrent() != NULL) {
+	currentProcess = q->getCurrent();
+	while (currentProcess != NULL) {
 		if ( currentProcess->getPriority() > selectedProcess->getPriority() ) {
 			selectedProcess = q->getCurrent();
 		}
