@@ -41,15 +41,7 @@ void ReadyQueue::update() {
 }
 
 void ReadyQueue::remove(PCB* pcb) {
-	i = mQueue.begin();
-	bool found = false;
-	while( i != mQueue.end() || !found )
-	{
-		if((*i) == pcb){
-			mQueue.erase(i);
-			found = true;
-		}
-	}
+	mQueue.remove(pcb);
 }
 
 int ReadyQueue::getSize(){
