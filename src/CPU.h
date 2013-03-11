@@ -17,6 +17,9 @@ using namespace std;
 class CPU{
 
 	public:
+		//default constructor
+		CPU();	
+	
 		/* Gets the status of the process being checked.
 		 * @param: mProcess - the current process being checked
 		 * @return:getStatus - the current status of the process

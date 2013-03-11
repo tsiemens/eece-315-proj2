@@ -8,6 +8,10 @@
 #include <iostream>
 #include "CPU.h"
 
+CPU::CPU(){
+	mProcess = NULL;
+}
+
 int CPU::getStatus(){
         int TimeRemInBurst = mProcess->getTimeRemInBurst();
         if(TimeRemInBurst <= 0){
