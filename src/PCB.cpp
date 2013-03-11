@@ -91,12 +91,12 @@ bool PCB::isDone(){
 	}
 }
 
-int PCB::getAvPrevBurst(){
+double PCB::getAvPrevBurst(){
 	return mAvPrevBurst;
 }
 
-void PCB::setAvPrevBurst(int average){
-	mAvPrevBurst = average;
+void PCB::updateAvPrevBurst(int lastBurst, double alpha){
+	mAvPrevBurst = alpha*lastBurst + (1.0 - alpha)*mAvPrevBurst;
 }
 
 int PCB::getTotalExecTime(){
@@ -105,5 +105,14 @@ int PCB::getTotalExecTime(){
 		total += mBursts[i];
 		i++;
 	}
+	return total;
+}
+
+int PCB::getTurnaroundTime(){
+	int total = 0;
+	for(unsigned int i = 0; i < mBursts.size(); i++){
+		total += mBursts[i];
+	}
+	total += getWaitTime();
 	return total;
 }
