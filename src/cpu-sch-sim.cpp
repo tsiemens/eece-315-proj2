@@ -6,6 +6,7 @@
  */
 
 #include<iostream>
+#include<unistd.h>
 #include<fstream>
 #include<string>
 #include<vector>
@@ -34,6 +35,29 @@ int main(){
 	ReadyQueue readyQueue;
 	IOQueues ioQueues;
 	PCB* doneIO;
+
+	//Setting up log file
+	char dirBuffer[1024];
+	string logFileName;
+    ssize_t dirLen = readlink("/proc/self/exe", dirBuffer, sizeof(dirBuffer)-1);
+    if (dirLen != -1) {
+      dirBuffer[dirLen] = '\0';
+      logFileName = string(dirBuffer);
+    } else {
+		cout << "ERROR: could not open log file"<<endl;
+		return 1;
+    }
+	while(logFileName[logFileName.size()-1] != '/'){
+		logFileName.pop_back();
+	}
+	logFileName += "log.txt";
+	ofstream logFile (logFileName);
+	if( !logFile.is_open() ){
+		cout << "ERROR: could not open log file"<<endl;
+		return 1;
+	}
+	
+
 	
 	cout<<"Please enter workload file name: ";
 	/* for testing smoothness
@@ -67,8 +91,11 @@ int main(){
 	while(!allProcessesDone){
 		//Insert any newly arrived processes
 		for(unsigned int i = 0; i < processes.size();i++){
-			if(processes[i]->getTARQ() == time)
+			if(processes[i]->getTARQ() == time){
 				readyQueue.insert(processes[i]);
+				logFile<<"Start: PID "<<processes[i]->getPID()
+					<<" @ time: "<<time<<endl;					//LOG
+			}
 		}
 	
 		//Put any processes done IO into the ready queue
@@ -76,6 +103,8 @@ int main(){
 			doneIO= ioQueues.removeReadyProcess();
 			while(doneIO != NULL){
 				readyQueue.insert(doneIO);
+				logFile<<"Done IO: PID "<<doneIO->getPID()
+					<<" @ time:"<<time<<endl;				//LOG
 				doneIO = ioQueues.removeReadyProcess();
 			}	
 		}
@@ -83,9 +112,12 @@ int main(){
 		//If Time slice has ended, or process has finished, place in IO
 		if(simCPU.getProcess() != NULL){ 
 			if(	simCPU.getProcess()->isDone() || 
+					simCPU.getProcess()->getCurrentBurst() % 2 != 0 ||
 				  ( scheduler->doesTimeSlice() && 
 					simCPU.getBurstDuration() == scheduler->getQuantumTime() )){
 			ioQueues.insert(simCPU.getProcess());
+			logFile<<"Done CPU burst: PID "<<simCPU.getProcess()->getPID()
+					<<" @ time:"<<time<<endl;				//LOG
 			simCPU.setProcess(NULL);
 			}
 		//If there are interrupts, preempt with higher priority process
@@ -95,14 +127,19 @@ int main(){
 					simCPU.getProcess()->getPriority() ){
 				readyQueue.insert(simCPU.getProcess());
 				simCPU.setProcess(impatientProcess);
+
+				logFile<<"Interrupt: PID "<<impatientProcess->getPID()
+					<<" @ time:"<<time<<endl;				//LOG
 			} else {
 				readyQueue.insert(impatientProcess);
 			}
 		}
 
 		//Put process into cpu if cpu is empty
-		if((simCPU.getProcess() == NULL) && (readyQueue.getSize() != 0))
+		if((simCPU.getProcess() == NULL) && (readyQueue.getSize() != 0)){
 			simCPU.setProcess(scheduler->schedule(&readyQueue));
+			logFile<<"Next process in CPU @ time:"<<time<<endl;		//LOG
+		}
 
 		//Increment wait time on ready queue
 		readyQueue.update();
@@ -124,5 +161,6 @@ int main(){
 	for(unsigned int i=0; i< processes.size();i++)
 		delete processes[i];	
 
+	logFile.close();
 	return 0;
 }
