@@ -50,7 +50,7 @@ int main(){
 	while(logFileName[logFileName.size()-1] != '/'){
 		logFileName.pop_back();
 	}
-	logFileName += "log.txt";
+	logFileName += "actions.log";
 	ofstream logFile (logFileName);
 	if( !logFile.is_open() ){
 		cout << "ERROR: could not open log file"<<endl;
