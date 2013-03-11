@@ -35,6 +35,16 @@ public:
 	 */
 	int getQuantumTime();
 
+	/* Sets the value for average weighting (defaulted at 0.7)
+	 * @param: a - value to be set. must be positive.
+	 */
+	void setAlpha(double a);
+
+	/* @return: the value for average weighting
+	 */
+	double getAlpha();
+
+
 	/* Sets the time slice timer back to the quantum time
 	 */
 	void resetTimeSliceTimer();
@@ -67,6 +77,7 @@ public:
 protected:
 	int mQuantumTime;
 	int mTimeSliceTimer;
+	double mAlpha;
 	bool mDoesTimeSlice;
 	bool mDoesInterrupt;
 };

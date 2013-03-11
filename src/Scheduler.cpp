@@ -9,7 +9,9 @@
 
 using namespace std;
 
-Scheduler::Scheduler(){}
+Scheduler::Scheduler(){
+	mAlpha = 0.7;
+}
 
 void Scheduler::setQuantumTime(int qt){
 	if( qt < 1 ){
@@ -25,6 +27,16 @@ int Scheduler::getQuantumTime(){
 	}else{
 		return mQuantumTime;
 	}
+}
+
+void Scheduler::setAlpha(double a){
+	if(a > 0){
+		mAlpha = a;
+	}
+}
+
+double Scheduler::getAlpha(){
+	return mAlpha;
 }
 
 void Scheduler::resetTimeSliceTimer(){
