@@ -37,6 +37,10 @@ int PCB::getPID(){
 	return mPID;
 }
 
+int PCB::getTARQ(){
+	return mTARQ;
+}
+
 int PCB::getWaitTime(){
 	return mWaitTime;
 }
