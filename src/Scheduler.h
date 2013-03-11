@@ -35,6 +35,16 @@ public:
 	 */
 	int getQuantumTime();
 
+	/* Sets the value for average weighting (defaulted at 0.7)
+	 * @param: a - value to be set. must be positive.
+	 */
+	void setAlpha(double a);
+
+	/* @return: the value for average weighting
+	 */
+	double getAlpha();
+
+
 	/* Sets the time slice timer back to the quantum time
 	 */
 	void resetTimeSliceTimer();
@@ -63,12 +73,11 @@ public:
 	/*Constants*/
 	//Returned from getQuantumTime if does not time slice
 	static const int DOES_NOT_TIME_SLICE = 0;
-	//Average burst weighter
-	static const double ALPHA = 0.7;
 
 protected:
 	int mQuantumTime;
 	int mTimeSliceTimer;
+	double mAlpha;
 	bool mDoesTimeSlice;
 	bool mDoesInterrupt;
 };
