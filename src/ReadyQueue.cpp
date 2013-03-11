@@ -1,3 +1,10 @@
+/* ReadyQueue.cpp
+ * Class for managing the Ready Queue
+ *
+ * EECE 315
+ * Group BB4
+ */
+
 #include "ReadyQueue.h"
 
 // Constructor

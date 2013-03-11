@@ -7,7 +7,6 @@
 
 #ifndef READY_QUEUE_H
 #define READY_QUEUE_H
-#include <vector>
 #include <list>
 #include "PCB.h"
 #include <iostream>

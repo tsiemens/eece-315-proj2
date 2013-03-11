@@ -6,18 +6,25 @@
  */
 
 #include "SchedulerFactory.h"
-#include "FIFOScheduler.h"
+#include "FirstScheduler.h"
 #include <iostream>
 
 using namespace std;
 
-Scheduler* SchedulerFactory::makeScheduler(int algIndex){
+Scheduler* SchedulerFactory::makeScheduler(int algIndex, int quantumTime){
 	Scheduler* scheduler;
 	switch(algIndex){
 		case FCFS:{
-			FIFOScheduler* temp = new FIFOScheduler();
-			scheduler = temp;//new FIFOScheduler();
+			//FCFS has no time slicing
+			FirstScheduler* temp = new FirstScheduler(false);
+			scheduler = temp;
 			break;
+		}
+		case RR:{
+			//Round robin has time slicing
+			FirstScheduler* temp = new FirstScheduler(true, quantumTime);
+			scheduler = temp;
+			break;	
 		}
 		//Others here
 		default:
