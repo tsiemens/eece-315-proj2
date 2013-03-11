@@ -111,14 +111,26 @@ int main(){
 
 		//If Time slice has ended, or process has finished, place in IO
 		if(simCPU.getProcess() != NULL){ 
-			if(	simCPU.getProcess()->isDone() || 
-					simCPU.getProcess()->getCurrentBurst() % 2 != 0 ||
-				  ( scheduler->doesTimeSlice() && 
-					simCPU.getBurstDuration() == scheduler->getQuantumTime() )){
-			ioQueues.insert(simCPU.getProcess());
-			logFile<<"Done CPU burst: PID "<<simCPU.getProcess()->getPID()
+			//Process has finished
+			if(	simCPU.getProcess()->isDone() ){
+				logFile<<"Process finished: PID "
+					<<simCPU.getProcess()->getPID()
 					<<" @ time:"<<time<<endl;				//LOG
-			simCPU.setProcess(NULL);
+				simCPU.setProcess(NULL);
+			//Process needs IO
+			}else if( simCPU.getProcess()->getCurrentBurst() % 2 != 0 ){
+				ioQueues.insert(simCPU.getProcess());
+				logFile<<"Done CPU burst: PID "
+					<<simCPU.getProcess()->getPID()
+					<<" @ time:"<<time<<endl;				//LOG
+				simCPU.setProcess(NULL);
+			//Time slice has expired
+			} else if( scheduler->doesTimeSlice() && 
+			simCPU.getBurstDuration() == scheduler->getQuantumTime()){
+				readyQueue.insert(simCPU.getProcess());
+				logFile<<"Time slice: PID "<<simCPU.getProcess()->getPID()
+					<<" @ time:"<<time<<endl;				//LOG
+				simCPU.setProcess(NULL);
 			}
 		//If there are interrupts, preempt with higher priority process
 		} else if ( scheduler->doesInterrupt() ){
