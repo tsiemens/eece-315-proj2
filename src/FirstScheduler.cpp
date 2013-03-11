@@ -5,18 +5,18 @@
  * Group BB4
  */
 
-#include "FIFOScheduler.h"
+#include "FirstScheduler.h"
 
 using namespace std;
 
-FIFOScheduler::FIFOScheduler(){
-	mDoesTimeSlice = false;
+FirstScheduler::FirstScheduler(bool doesTimeSlice, int quantumTime){
+	mDoesTimeSlice = doesTimeSlice;
 	mDoesInterrupt = false;
-	mQuantumTime = DOES_NOT_TIME_SLICE;
+	mQuantumTime = quantumTime;
 	resetTimeSliceTimer();
 }
 
-PCB* FIFOScheduler::schedule(ReadyQueue* q){
+PCB* FirstScheduler::schedule(ReadyQueue* q){
 	q->begin();
 	PCB* nextProcess = q->getNext();
 	if(nextProcess != NULL){

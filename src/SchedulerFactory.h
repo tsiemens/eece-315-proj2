@@ -17,9 +17,11 @@ class SchedulerFactory{
 
 	public:
 		/* Creates the appropriate scheduler type
-		 * @param: algIndex - the algorithm. Must be number defined by AlgType
+		 * @param: algIndex - the algorithm. 
+		           Must be number defined by AlgType
+		 * @param: quantumTime - the max time for a time slice
 		 * @return: pointer to a Scheduler. Null if an error occurs.
 		 */
-		Scheduler* makeScheduler(int algIndex);
+		Scheduler* makeScheduler(int algIndex, int quantumTime);
 };
 #endif
