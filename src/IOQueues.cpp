@@ -24,6 +24,7 @@ void IOQueues::updateTimeRemaining(){
 	for (i = mQueue.begin(); i != mQueue.end(); i++)
 	{
 		(*i)->decTimeRemInBurst();
+		(*i)->incWaitTime();
 	}
 }
 
