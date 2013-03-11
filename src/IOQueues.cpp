@@ -7,14 +7,6 @@
 
 #include "IOQueues.h"
 
-// Constructor
-IOQueues::IOQueues() {}
-
-// Destructor
-IOQueues::~IOQueues() {
-	mQueue.~list();
-}
-
 void IOQueues::insert(PCB* process) {
 	mQueue.push_back(process);
 }
@@ -26,7 +18,6 @@ void IOQueues::updateTimeRemaining(){
 		(*i)->decTimeRemInBurst();
 	}
 }
-
 
 PCB* IOQueues::removeReadyProcess(){
 	PCB* readyProcess = NULL;
@@ -41,4 +32,8 @@ PCB* IOQueues::removeReadyProcess(){
 		}
 	}
 	return readyProcess;
+}
+
+int IOQueues::getSize(){
+	return mQueue.size();
 }

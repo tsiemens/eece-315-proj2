@@ -30,8 +30,9 @@ class ReadyQueue{
 
 		//Removes pcb from the ready queue if it exists in the ready queue
 		void remove(PCB* pcb);
-
-
+		
+		//returns size of ready queue
+		int getSize();
 	private:
 		list<PCB*> mQueue;
 		list<PCB*>::iterator i;

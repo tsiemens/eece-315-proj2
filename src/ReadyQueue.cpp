@@ -52,5 +52,7 @@ void ReadyQueue::remove(PCB* pcb) {
 	}
 }
 
-
+int ReadyQueue::getSize(){
+	return mQueue.size();
+}
 
