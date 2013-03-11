@@ -7,14 +7,6 @@
 
 #include "ReadyQueue.h"
 
-// Constructor
-ReadyQueue::ReadyQueue() {}
-
-// Destructor
-ReadyQueue::~ReadyQueue() {
-	mQueue.~list();
-}
-
 // adds PCB to ready queue and resets rel priority
 // @input: PCB* to be added.
 void ReadyQueue::insert(PCB* process) {

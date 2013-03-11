@@ -16,13 +16,6 @@ using namespace std;
 class ReadyQueue{
 
 	public:
-		// Constructor
-		ReadyQueue();
-
-		// Destructor
-		~ReadyQueue();
-
-		
 		//	@Input: PCB to be added to ready Queue
 		void insert(PCB* process);
 
@@ -31,7 +24,7 @@ class ReadyQueue{
 
 		// get next PCB in ready queue
 		PCB* getNext();
-
+		
 		// Updates PCB time variables
 		void update();
 
@@ -40,9 +33,8 @@ class ReadyQueue{
 
 
 	private:
-
-	list<PCB*> mQueue;
-	list<PCB*>::iterator i;
+		list<PCB*> mQueue;
+		list<PCB*>::iterator i;
 };
 
 #endif
