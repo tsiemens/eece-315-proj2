@@ -25,6 +25,9 @@ class ReadyQueue{
 		// get next PCB in ready queue
 		PCB* getNext();
 		
+		// get current PCB in ready queue
+		PCB* getCurrent();
+
 		// Updates PCB time variables
 		void update();
 

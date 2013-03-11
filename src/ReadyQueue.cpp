@@ -25,9 +25,18 @@ PCB* ReadyQueue::getNext() {
 	if (mQueue.empty() || i == mQueue.end()) {
 		return NULL;
 	}
-	PCB* process = *i;
 	i++;
+	PCB* process = *i;
+	
 	return process;
+}
+
+PCB* ReadyQueue::getCurrent() {
+	if (mQueue.empty() || i == mQueue.end()) {
+		return NULL;
+	}
+	return *i;
+
 }
 
 // update PCBs in update
