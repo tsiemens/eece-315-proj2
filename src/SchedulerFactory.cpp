@@ -7,6 +7,7 @@
 
 #include "SchedulerFactory.h"
 #include "FirstScheduler.h"
+#include "PriorityScheduler.h"
 #include <iostream>
 
 using namespace std;
@@ -25,6 +26,18 @@ Scheduler* SchedulerFactory::makeScheduler(int algIndex, int quantumTime){
 			FirstScheduler* temp = new FirstScheduler(true, quantumTime);
 			scheduler = temp;
 			break;	
+		}
+		case PPP:{
+			// Premptive Priority Polite
+			PriorityScheduler* temp = new PriorityScheduler(quantumTime, false);
+			scheduler = temp;
+			break;
+		}
+		case IPP:{
+			// Premptive Priority Impolite
+			PriorityScheduler* temp = new PriorityScheduler(quantumTime, true);
+			scheduler = temp;
+			break;
 		}
 		//Others here
 		default:
