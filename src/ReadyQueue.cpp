@@ -38,6 +38,10 @@ PCB* ReadyQueue::getNext() {
 	return process;
 }
 
+PCB* ReadyQueue::getCurrent() {
+	return *i;
+}
+
 // update PCBs in update
 void ReadyQueue::update() {
 
