@@ -13,17 +13,20 @@
 #include "WorkloadParser.h"
 #include "Scheduler.h"
 #include "SchedulerFactory.h"
-
-Scheduler* createScheduler(int algIndex);
+#include "ReadyQueue.h"
 
 int main(){
 	using namespace std;
+
 	int algorithmIndex = 0;
+	int quantumTime = 0;
+	int time = 0;
 	WorkloadParser parser;
 	vector<PCB*> processes;
 	string filename;
-	ifstream inFile;
 	Scheduler* scheduler;
+	SchedulerFactory schFactory;
+	ReadyQueue readyQueue;
 	
 	cout<<"Please enter workload file name: ";
 	/* for testing smoothness
@@ -34,7 +37,7 @@ int main(){
 	filename = "workloads/testWorkload1.txt";
 	processes = parser.parseWorkload(filename);
 
-	/*Get the algorithm to be used*/
+	//Get the algorithm to be used
 	cout<<endl<<"\t"<<"1) FCFS   2) RR   3) Polite Premptive Priority"<<endl
 		      <<"\t"<<"4) Impatient Premptive Priority"<<endl
 			  <<"\t"<<"5) Non Premprive Priority   6) SJF   7) SPB"<<endl<<endl;
@@ -43,25 +46,28 @@ int main(){
 		cout<<"Select scheduling algorithm:";
 		cin>>algorithmIndex;
 	}
-	SchedulerFactory schFactory;
-	int quantumTime = 0;
+
 	if( algorithmIndex != FCFS ){
 		while( quantumTime <= 0 ){
 			cout<<"Please enter a value for quantum time:";
 			cin>>quantumTime;
 		}
 	}
+
 	scheduler = schFactory.makeScheduler(algorithmIndex, quantumTime);
+	readyQueue.begin();
 
-	/*Make Ready queue*/
-	/*Make IO queue*/
-	/*Make CPU*/
-
-	/*While not all processes are done*/
-		/*Put all new processes in ready queue*/
+	while(time < 10){
+		for(unsigned int i = 0; i < processes.size();i++){
+			if(processes[i]->getTARQ() == time)
+				readyQueue.insert(processes[i]);
+		}
+		
+		/*Make IO queue*/
+		/*Make CPU*/
 
 		/*Check IO queue for done processes*/
-			/*Move any to ready queue that are done*/
+		/*Move any to ready queue that are done*/
 		
 		/*Check if CPU is empty*/
 		/*If not empty*/
@@ -77,8 +83,12 @@ int main(){
 		/*Increment wait time on wait queue*/
 		/*Decrement time remianing on CPU*/
 		/*Decrement time remaining on IO*/
-						
 
-	processes.clear();
+		time++;
+	}				
+
+	for(unsigned int i=0; i< processes.size();i++)
+		delete processes[i];	
+
 	return 0;
 }
