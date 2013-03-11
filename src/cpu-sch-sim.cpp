@@ -14,6 +14,9 @@
 #include "Scheduler.h"
 #include "SchedulerFactory.h"
 #include "ReadyQueue.h"
+#include "IOQueues.h"
+#include "CPU.h"
+
 
 int main(){
 	using namespace std;
@@ -21,12 +24,16 @@ int main(){
 	int algorithmIndex = 0;
 	int quantumTime = 0;
 	int time = 0;
+	bool allProcessesDone = false;
 	WorkloadParser parser;
 	vector<PCB*> processes;
 	string filename;
+	CPU simCPU;
 	Scheduler* scheduler;
 	SchedulerFactory schFactory;
 	ReadyQueue readyQueue;
+	IOQueues ioQueues;
+	PCB* doneIO;
 	
 	cout<<"Please enter workload file name: ";
 	/* for testing smoothness
@@ -55,19 +62,23 @@ int main(){
 	}
 
 	scheduler = schFactory.makeScheduler(algorithmIndex, quantumTime);
-	readyQueue.begin();
 
-	while(time < 10){
+	while(!allProcessesDone){	
 		for(unsigned int i = 0; i < processes.size();i++){
 			if(processes[i]->getTARQ() == time)
 				readyQueue.insert(processes[i]);
 		}
+	
+		if((simCPU.getProcess() == NULL) && (readyQueue.getSize() != 0))
+			simCPU.setProcess(scheduler->schedule(&readyQueue));
 		
-		/*Make IO queue*/
-		/*Make CPU*/
-
-		/*Check IO queue for done processes*/
-		/*Move any to ready queue that are done*/
+		if(ioQueues.getSize() != 0){
+			doneIO= ioQueues.removeReadyProcess();
+			while(doneIO != NULL){
+				readyQueue.insert(doneIO);
+				doneIO = ioQueues.removeReadyProcess();
+			}	
+		}
 		
 		/*Check if CPU is empty*/
 		/*If not empty*/
@@ -83,6 +94,13 @@ int main(){
 		/*Increment wait time on wait queue*/
 		/*Decrement time remianing on CPU*/
 		/*Decrement time remaining on IO*/
+
+		for(unsigned int i = 0; i< processes.size();i++){
+			if(!(processes[i]->isDone()))
+				break;
+			else if(i == (processes.size() - 1))
+				allProcessesDone = true;
+		}	
 
 		time++;
 	}				
