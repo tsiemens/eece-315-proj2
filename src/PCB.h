@@ -73,16 +73,25 @@ class PCB{
 
 		/* @return: the average duration of CPU bursts
 		 */
-		int getAvPrevBurst();
+		double getAvPrevBurst();
 
-		/* Sets the average burst time for the process
-		 * @param: average - the average to set
+		/* Updated the average burst time for the process
+		 * Performs newAverage = aplha*lastBurst + (1-alpha)*oldAverage
+		 * @param: lastBurst - the duration of the last burst
+		 * @param: alpha - the value of alpha
 		 */
-		void setAvPrevBurst(int average);
+		void updateAvPrevBurst(int lastBurst, double alpha);
 
-		/* @return: the total time the process will or has spent in CPU burst
+		/* @return: the total time the process will or has spent 
+		 *          in CPU burst
 		 */
 		int getTotalExecTime();
+
+		/* @return: the turnaround time of the process 
+		 *			(should only be called if isDone is true)
+		 */
+		int getTurnaroundTime();
+
 
 	private:
 		int mPID;
@@ -92,7 +101,7 @@ class PCB{
 		int mRelPriority;
 		int mCurrentBurst;
 		int mTimeRemInBurst;
-		int mAvPrevBurst;
+		double mAvPrevBurst;
 		vector <int> mBursts;
 };
 #endif

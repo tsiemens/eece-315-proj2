@@ -63,6 +63,8 @@ public:
 	/*Constants*/
 	//Returned from getQuantumTime if does not time slice
 	static const int DOES_NOT_TIME_SLICE = 0;
+	//Average burst weighter
+	static const double ALPHA = 0.7;
 
 protected:
 	int mQuantumTime;
