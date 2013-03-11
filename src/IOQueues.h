@@ -16,12 +16,6 @@ using namespace std;
 class IOQueues{
 
 	public:
-		// Constructor
-		IOQueues();
-
-		// Destructor
-		~IOQueues();
-
 		/* Adds the PCB to its own IO queue
 	   	 * @param: PCB to be added to IO Queues
 		 */
@@ -37,12 +31,13 @@ class IOQueues{
 		 * @return PCB pointer of process done IO. NULL if no processes done.
 		 */
 		PCB* removeReadyProcess();
-
+		
+		//returns the size of the ioqueue
+		int getSize();
 
 	private:
-
-	list<PCB*> mQueue;
-	list<PCB*>::iterator i;
+		list<PCB*> mQueue;
+		list<PCB*>::iterator i;
 };
 
 #endif

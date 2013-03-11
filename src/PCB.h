@@ -30,6 +30,10 @@ class PCB{
 		 */
 		int getPID();
 
+		/* @return: the tarq for the process
+		 */
+		int getTARQ();
+
 		/* @return: the total time the process as been waiting.
 		 */
 		int getWaitTime();

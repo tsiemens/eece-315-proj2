@@ -13,17 +13,27 @@
 #include "WorkloadParser.h"
 #include "Scheduler.h"
 #include "SchedulerFactory.h"
+#include "ReadyQueue.h"
+#include "IOQueues.h"
+#include "CPU.h"
 
-Scheduler* createScheduler(int algIndex);
 
 int main(){
 	using namespace std;
+
 	int algorithmIndex = 0;
+	int quantumTime = 0;
+	int time = 0;
+	bool allProcessesDone = false;
 	WorkloadParser parser;
 	vector<PCB*> processes;
 	string filename;
-	ifstream inFile;
+	CPU simCPU;
 	Scheduler* scheduler;
+	SchedulerFactory schFactory;
+	ReadyQueue readyQueue;
+	IOQueues ioQueues;
+	PCB* doneIO;
 	
 	cout<<"Please enter workload file name: ";
 	/* for testing smoothness
@@ -34,7 +44,7 @@ int main(){
 	filename = "workloads/testWorkload1.txt";
 	processes = parser.parseWorkload(filename);
 
-	/*Get the algorithm to be used*/
+	//Get the algorithm to be used
 	cout<<endl<<"\t"<<"1) FCFS   2) RR   3) Polite Premptive Priority"<<endl
 		      <<"\t"<<"4) Impatient Premptive Priority"<<endl
 			  <<"\t"<<"5) Non Premprive Priority   6) SJF   7) SPB"<<endl<<endl;
@@ -43,25 +53,32 @@ int main(){
 		cout<<"Select scheduling algorithm:";
 		cin>>algorithmIndex;
 	}
-	SchedulerFactory schFactory;
-	int quantumTime = 0;
+
 	if( algorithmIndex != FCFS ){
 		while( quantumTime <= 0 ){
 			cout<<"Please enter a value for quantum time:";
 			cin>>quantumTime;
 		}
 	}
+
 	scheduler = schFactory.makeScheduler(algorithmIndex, quantumTime);
 
-	/*Make Ready queue*/
-	/*Make IO queue*/
-	/*Make CPU*/
-
-	/*While not all processes are done*/
-		/*Put all new processes in ready queue*/
-
-		/*Check IO queue for done processes*/
-			/*Move any to ready queue that are done*/
+	while(!allProcessesDone){	
+		for(unsigned int i = 0; i < processes.size();i++){
+			if(processes[i]->getTARQ() == time)
+				readyQueue.insert(processes[i]);
+		}
+	
+		if((simCPU.getProcess() == NULL) && (readyQueue.getSize() != 0))
+			simCPU.setProcess(scheduler->schedule(&readyQueue));
+		
+		if(ioQueues.getSize() != 0){
+			doneIO= ioQueues.removeReadyProcess();
+			while(doneIO != NULL){
+				readyQueue.insert(doneIO);
+				doneIO = ioQueues.removeReadyProcess();
+			}	
+		}
 		
 		/*Check if CPU is empty*/
 		/*If not empty*/
@@ -77,8 +94,19 @@ int main(){
 		/*Increment wait time on wait queue*/
 		/*Decrement time remianing on CPU*/
 		/*Decrement time remaining on IO*/
-						
 
-	processes.clear();
+		for(unsigned int i = 0; i< processes.size();i++){
+			if(!(processes[i]->isDone()))
+				break;
+			else if(i == (processes.size() - 1))
+				allProcessesDone = true;
+		}	
+
+		time++;
+	}				
+
+	for(unsigned int i=0; i< processes.size();i++)
+		delete processes[i];	
+
 	return 0;
 }
