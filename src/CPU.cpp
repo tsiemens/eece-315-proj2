@@ -18,6 +18,10 @@ int CPU::getStatus(){
         return mProcessStatus;
 }
 
+int CPU::getBurstDuration(){
+	return mBurstDuration;
+}
+
 void CPU::decPCBTime(){
         int TimeRemInBurst = mProcess->getTimeRemInBurst();
         if(TimeRemInBurst == 0){
@@ -25,6 +29,7 @@ void CPU::decPCBTime(){
         }else if(TimeRemInBurst > 0){
                 mProcess->decTimeRemInBurst();
                 mProcessStatus = getStatus();
+				mBurstDuration++;
         }else{
                 cout<<"Error, time remaining in CPU burst cannot be below 0.";
         }
@@ -36,5 +41,6 @@ PCB* CPU::getProcess(){
 
 void CPU::setProcess(PCB *process){
 	mProcessStatus = RUNNING;
-        mProcess = process;
+    mProcess = process;
+	mBurstDuration = 0;
 }

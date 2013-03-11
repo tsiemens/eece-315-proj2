@@ -25,6 +25,10 @@ class CPU{
 		 */
 		int getStatus();
 
+		/* @return: the burst time a process has been in the CPU 
+		 */
+		int getBurstDuration();
+
 		/* Determine the time remaining in the current CPU burst
 		 * and decrement that time if the process is not done.
 		 */
@@ -44,5 +48,6 @@ class CPU{
 		//insert some private class variables
 		PCB *mProcess;
 		int mProcessStatus;
+		int mBurstDuration;
 };
 #endif
