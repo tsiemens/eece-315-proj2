@@ -8,3 +8,4 @@ Members:
 <li>Andrej Satara</li>
 <li>Jessica Seto</li>
 <li>Trevor Siemens</li>
+</ul>
