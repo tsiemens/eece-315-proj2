@@ -30,7 +30,7 @@ $(addprefix bin/, $(EXECUTABLE)) : $(OBJ)
 obj/%.o : src/%.cpp
 	echo "	CXX	$<"
 	mkdir -p obj/
-	$(CXX) $(CFLAGS) -o $@ -c -MMD -MP $<
+	$(CXX) -g $(CFLAGS) -o $@ -c -MMD -MP $<
 
 #include dependency files
 -include $(patsubst src/%.cpp, obj/%.d, $(SRC))  

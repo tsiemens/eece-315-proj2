@@ -63,15 +63,15 @@ int main(){
 
 	scheduler = schFactory.makeScheduler(algorithmIndex, quantumTime);
 
-	while(!allProcessesDone){	
+	//Main running loop. Time begins to flow here.
+	while(!allProcessesDone){
+		//Insert any newly arrived processes
 		for(unsigned int i = 0; i < processes.size();i++){
 			if(processes[i]->getTARQ() == time)
 				readyQueue.insert(processes[i]);
 		}
 	
-		if((simCPU.getProcess() == NULL) && (readyQueue.getSize() != 0))
-			simCPU.setProcess(scheduler->schedule(&readyQueue));
-		
+		//Put any processes done IO into the ready queue
 		if(ioQueues.getSize() != 0){
 			doneIO= ioQueues.removeReadyProcess();
 			while(doneIO != NULL){
@@ -79,21 +79,37 @@ int main(){
 				doneIO = ioQueues.removeReadyProcess();
 			}	
 		}
-		
-		/*Check if CPU is empty*/
-		/*If not empty*/
-			/*If done burst*/ 
-				/*put into IO queue (if not finished), 
-				  then get new process from deady queue*/
-			/*If process is not done, but interrupts are on, 
-			 and there is a higher priority process*/
-				/*Pull from CPU and insert higher priority process*/
-			/*If process is not done, and interrupts are off*/
-				//Do nothing
 
-		/*Increment wait time on wait queue*/
-		/*Decrement time remianing on CPU*/
-		/*Decrement time remaining on IO*/
+		//If Time slice has ended, or process has finished, place in IO
+		if(simCPU.getProcess() != NULL){ 
+			if(	simCPU.getProcess()->isDone() || 
+				  ( scheduler->doesTimeSlice() && 
+					simCPU.getBurstDuration() == scheduler->getQuantumTime() )){
+			ioQueues.insert(simCPU.getProcess());
+			simCPU.setProcess(NULL);
+			}
+		//If there are interrupts, preempt with higher priority process
+		} else if ( scheduler->doesInterrupt() ){
+			PCB* impatientProcess = scheduler->schedule(&readyQueue);
+			if( impatientProcess->getPriority() > 
+					simCPU.getProcess()->getPriority() ){
+				readyQueue.insert(simCPU.getProcess());
+				simCPU.setProcess(impatientProcess);
+			} else {
+				readyQueue.insert(impatientProcess);
+			}
+		}
+
+		//Put process into cpu if cpu is empty
+		if((simCPU.getProcess() == NULL) && (readyQueue.getSize() != 0))
+			simCPU.setProcess(scheduler->schedule(&readyQueue));
+
+		//Increment wait time on ready queue
+		readyQueue.update();
+		//Decrement time remianing on CPU
+		simCPU.decPCBTime();
+		//Decrement time remaining on IO
+		ioQueues.updateTimeRemaining();
 
 		for(unsigned int i = 0; i< processes.size();i++){
 			if(!(processes[i]->isDone()))
