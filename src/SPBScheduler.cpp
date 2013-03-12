@@ -8,7 +8,17 @@ SPBScheduler::SPBScheduler(bool doesTimeSlice, int quantumTime, double weightedA
 }
 
 PCB* SPBScheduler::schedule(ReadyQueue *q){
+	PCB* selectedProcess;
+	PCB* currentProcess;
 	q->begin();
-	PCB* nextProcess = q->getCurrent();
-	return nextProcess;
+	selectedProcess = q->getCurrent();
+	currentProcess = q->getCurrent();
+	while (currentProcess != NULL) {
+		if ( currentProcess->getAvPrevBurst() < selectedProcess->getAvPrevBurst() ) {
+			selectedProcess = q->getCurrent();
+		}		
+		currentProcess = q->getNext();
+	}
+	q->remove(selectedProcess);
+	return selectedProcess;
 }
