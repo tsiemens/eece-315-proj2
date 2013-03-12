@@ -5,7 +5,7 @@ using namespace std;
 
 
 PriorityScheduler::PriorityScheduler(int quantumTime, bool doesInterrupt) {
-
+	mDoesTimeSlice = true;
 	mQuantumTime = quantumTime;
 	mDoesInterrupt = doesInterrupt;
 }
