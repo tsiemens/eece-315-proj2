@@ -17,21 +17,21 @@ using namespace std;
 
 class FirstScheduler: public Scheduler{
 
-public:
+	public:
 
-	/* Initializes the first type algorithm 
-	 * scheduler to not interrupt.
-	 * @param: doesTimeSlice - if false, scheduler is FCFS, if true is RR
-	 * @param: quantumTime - quantum time, defaulted to DOES_NOT_TIME_SLICE  
-	 */
-	FirstScheduler(bool doesTimeSlice, int quantumTime = DOES_NOT_TIME_SLICE);
+		/* Initializes the first type algorithm 
+		 * scheduler to not interrupt.
+		 * @param: doesTimeSlice - if false, scheduler is FCFS, if true is RR
+		 * @param: quantumTime - quantum time, defaulted to DOES_NOT_TIME_SLICE  
+		 */
+		FirstScheduler(bool doesTimeSlice, int quantumTime = DOES_NOT_TIME_SLICE);
 
-	/* Selects the next process to be run in the CPU
-	 * Uses the First In First Out / Round robin algorithms.
-	 * @return: pointer to the process to be run next
-	 *          returns NULL if empty
-	 */
-	PCB* schedule(ReadyQueue* q);
+		/* Selects the next process to be run in the CPU
+		 * Uses the First In First Out / Round robin algorithms.
+		 * @return: pointer to the process to be run next
+		 *          returns NULL if empty
+		 */
+		PCB* schedule(ReadyQueue* q);
 
 };
 #endif

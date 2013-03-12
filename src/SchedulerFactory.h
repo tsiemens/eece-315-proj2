@@ -22,6 +22,6 @@ class SchedulerFactory{
 		 * @param: quantumTime - the max time for a time slice
 		 * @return: pointer to a Scheduler. Null if an error occurs.
 		 */
-		Scheduler* makeScheduler(int algIndex, int quantumTime);
+		Scheduler* makeScheduler(int algIndex, int quantumTime, double weightedAverage);
 };
 #endif
