@@ -4,8 +4,8 @@
 using namespace std;
 
 
-PriorityScheduler::PriorityScheduler(int quantumTime, bool doesInterrupt) {
-	mDoesTimeSlice = true;
+PriorityScheduler::PriorityScheduler(int quantumTime, bool doesInterrupt, bool doesTimeSlice) {
+	mDoesTimeSlice = doesTimeSlice;
 	mQuantumTime = quantumTime;
 	mDoesInterrupt = doesInterrupt;
 	mAlpha = 0;

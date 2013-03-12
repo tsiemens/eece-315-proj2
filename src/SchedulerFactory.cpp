@@ -29,21 +29,20 @@ Scheduler* SchedulerFactory::makeScheduler(int algIndex, int quantumTime){
 		}
 		case PPP:{
 			// Premptive Priority Polite
-			PriorityScheduler* temp = new PriorityScheduler(quantumTime, false);
+			PriorityScheduler* temp = new PriorityScheduler(quantumTime, false, true);
 			scheduler = temp;
 			break;
 		}
 		case IPP:{
 			// Premptive Priority Impolite
-			PriorityScheduler* temp = new PriorityScheduler(quantumTime, true);
+			PriorityScheduler* temp = new PriorityScheduler(quantumTime, true, true);
 			scheduler = temp;
 			break;
 		}
 		case NPP:{
 			// Non Premptive Priority
-			PriorityScheduler* temp = new PriorityScheduler(quantumTime, false);
-			temp->setDoesTimeSlice(false);
-			scheduler = temp;
+			PriorityScheduler* temp = new PriorityScheduler(quantumTime, false, false);
+			scheduler = new PriorityScheduler(quantumTime, false, false);
 			break;
 		}
 		//Others here
