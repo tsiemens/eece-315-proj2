@@ -42,7 +42,7 @@ Scheduler* SchedulerFactory::makeScheduler(int algIndex, int quantumTime){
 		case NPP:{
 			// Non Premptive Priority
 			PriorityScheduler* temp = new PriorityScheduler(quantumTime, false);
-			temp.setDoesTimeSlice(false);
+			temp->setDoesTimeSlice(false);
 			scheduler = temp;
 			break;
 		}
