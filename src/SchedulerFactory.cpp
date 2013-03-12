@@ -39,6 +39,13 @@ Scheduler* SchedulerFactory::makeScheduler(int algIndex, int quantumTime){
 			scheduler = temp;
 			break;
 		}
+		case NPP:{
+			// Non Premptive Priority
+			PriorityScheduler* temp = new PriorityScheduler(quantumTime, false);
+			temp.setDoesTimeSlice(false);
+			scheduler = temp;
+			break;
+		}
 		//Others here
 		default:
 			cout<<"Error occured getting algorithm"<<endl;
