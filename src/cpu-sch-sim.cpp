@@ -61,7 +61,7 @@ int main(){
 		cin>>algorithmIndex;
 	}
 
-	if( algorithmIndex != FCFS ){
+	if( algorithmIndex != FCFS && algorithmIndex != NPP){
 		while( quantumTime <= 0 ){
 			cout<<"Please enter a value for quantum time:";
 			cin>>quantumTime;
