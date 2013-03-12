@@ -8,35 +8,38 @@
 #include "SchedulerFactory.h"
 #include "FirstScheduler.h"
 #include "PriorityScheduler.h"
+#include "SPBScheduler.h"
 #include <iostream>
 
 using namespace std;
 
-Scheduler* SchedulerFactory::makeScheduler(int algIndex, int quantumTime){
+Scheduler* SchedulerFactory::makeScheduler(int algIndex, int quantumTime, double weightedAverage){
 	Scheduler* scheduler;
+
 	switch(algIndex){
 		case FCFS:{
 			//FCFS has no time slicing
-			FirstScheduler* temp = new FirstScheduler(false);
-			scheduler = temp;
+			scheduler = new FirstScheduler(false);
 			break;
 		}
 		case RR:{
 			//Round robin has time slicing
-			FirstScheduler* temp = new FirstScheduler(true, quantumTime);
-			scheduler = temp;
+			scheduler = new FirstScheduler(true, quantumTime);
 			break;	
 		}
 		case PPP:{
 			// Premptive Priority Polite
-			PriorityScheduler* temp = new PriorityScheduler(quantumTime, false);
-			scheduler = temp;
+			scheduler = new PriorityScheduler(quantumTime, false);
 			break;
 		}
 		case IPP:{
 			// Premptive Priority Impolite
-			PriorityScheduler* temp = new PriorityScheduler(quantumTime, true);
-			scheduler = temp;
+			scheduler = new PriorityScheduler(quantumTime, true);
+			break;
+		}
+		case SPB:{
+			//Shortest Previous Burst
+			scheduler = new SPBScheduler(true, quantumTime, weightedAverage);
 			break;
 		}
 		//Others here

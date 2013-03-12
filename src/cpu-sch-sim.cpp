@@ -26,6 +26,7 @@ int main(){
 	int algorithmIndex = 0;
 	int quantumTime = 0;
 	int time = 0;
+	double weightedAverage = 0;
 	bool allProcessesDone = false;
 	WorkloadParser parser;
 	vector<PCB*> processes;
@@ -68,7 +69,15 @@ int main(){
 		}
 	}
 
-	scheduler = schFactory.makeScheduler(algorithmIndex, quantumTime);
+	if(algorithmIndex == SPB){
+		do{
+			cout<<"Please enter a value for the weighted average:";
+			cin>>weightedAverage;
+		
+		}while(weightedAverage <= 0);
+	}
+
+	scheduler = schFactory.makeScheduler(algorithmIndex, quantumTime, weightedAverage);
 
 	//Main running loop. Time begins to flow here.
 	while(!allProcessesDone){
