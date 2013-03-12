@@ -104,17 +104,23 @@ int main(){
 				actLog.log(logss);
 				simCPU.setProcess(NULL);
 			//Process needs IO
+			//Reset priority
 			}else if( simCPU.getProcess()->getCurrentBurst() % 2 != 0 ){
 				ioQueues.insert(simCPU.getProcess());
+				simCPU.getProcess()->resetRelPriority();
+				simCPU.getProcess()->updateAvPrevBurst(simCPU.getBurstDuration(), scheduler->getAlpha());
 				logss<<"Done CPU burst: PID "
 					<<simCPU.getProcess()->getPID()
 					<<" @ time:"<<time<<endl;				//LOG
 				actLog.log(logss);
 				simCPU.setProcess(NULL);
 			//Time slice has expired
+			//Reset priority
 			} else if( scheduler->doesTimeSlice() && 
 			simCPU.getBurstDuration() == scheduler->getQuantumTime()){
 				readyQueue.insert(simCPU.getProcess());
+				simCPU.getProcess()->resetRelPriority();
+				simCPU.getProcess()->updateAvPrevBurst(simCPU.getBurstDuration(), scheduler->getAlpha());
 				logss<<"Time slice: PID "<<simCPU.getProcess()->getPID()
 					<<" @ time:"<<time<<endl;				//LOG
 				actLog.log(logss);
@@ -126,6 +132,7 @@ int main(){
 			if( impatientProcess->getPriority() > 
 					simCPU.getProcess()->getPriority() ){
 				readyQueue.insert(simCPU.getProcess());
+				simCPU.getProcess()->updateAvPrevBurst(simCPU.getBurstDuration(), scheduler->getAlpha());
 				simCPU.setProcess(impatientProcess);
 
 				logss<<"Interrupt: PID "<<impatientProcess->getPID()
