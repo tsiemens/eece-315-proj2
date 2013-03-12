@@ -42,6 +42,13 @@ Scheduler* SchedulerFactory::makeScheduler(int algIndex, int quantumTime, double
 			scheduler = new SPBScheduler(true, quantumTime, weightedAverage);
 			break;
 		}
+		case NPP:{
+			// Non Premptive Priority
+			PriorityScheduler* temp = new PriorityScheduler(quantumTime, false);
+			temp->setDoesTimeSlice(false);
+			scheduler = temp;
+			break;
+		}
 		//Others here
 		default:
 			cout<<"Error occured getting algorithm"<<endl;
