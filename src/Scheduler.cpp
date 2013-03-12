@@ -39,15 +39,6 @@ double Scheduler::getAlpha(){
 	return mAlpha;
 }
 
-void Scheduler::resetTimeSliceTimer(){
-	mTimeSliceTimer = mQuantumTime;
-}
-
-int Scheduler::decTimeSliceTimer(){
-	mTimeSliceTimer--;
-	return mTimeSliceTimer;
-}
-
 bool Scheduler::doesTimeSlice(){
 	return mDoesTimeSlice;
 }

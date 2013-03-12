@@ -8,7 +8,6 @@ PriorityScheduler::PriorityScheduler(int quantumTime, bool doesInterrupt) {
 
 	mQuantumTime = quantumTime;
 	mDoesInterrupt = doesInterrupt;
-	resetTimeSliceTimer();
 }
 
 // Returns the PCB with the highest priority
