@@ -13,6 +13,7 @@ FirstScheduler::FirstScheduler(bool doesTimeSlice, int quantumTime){
 	mDoesTimeSlice = doesTimeSlice;
 	mDoesInterrupt = false;
 	mQuantumTime = quantumTime;
+	mAlpha = 0;
 }
 
 PCB* FirstScheduler::schedule(ReadyQueue* q){
