@@ -39,25 +39,27 @@ int main(){
 	//Setting up log file
 	char dirBuffer[1024];
 	string logFileName;
-    ssize_t dirLen = readlink("/proc/self/exe", dirBuffer, sizeof(dirBuffer)-1);
-    if (dirLen != -1) {
-      dirBuffer[dirLen] = '\0';
-      logFileName = string(dirBuffer);
-    } else {
+	ssize_t dirLen = readlink("/proc/self/exe", dirBuffer, sizeof(dirBuffer)-1);
+
+	if (dirLen != -1) {
+		dirBuffer[dirLen] = '\0';
+		logFileName = string(dirBuffer);
+	} else {
 		cout << "ERROR: could not open log file"<<endl;
 		return 1;
-    }
+	}
+
 	while(logFileName[logFileName.size()-1] != '/'){
 		logFileName.pop_back();
 	}
+
 	logFileName += "actions.log";
 	ofstream logFile (logFileName);
+
 	if( !logFile.is_open() ){
 		cout << "ERROR: could not open log file"<<endl;
 		return 1;
-	}
-	
-
+	}	
 	
 	cout<<"Please enter workload file name: ";
 	/* for testing smoothness
@@ -155,8 +157,10 @@ int main(){
 
 		//Increment wait time on ready queue
 		readyQueue.update();
+
 		//Decrement time remianing on CPU
 		simCPU.decPCBTime();
+
 		//Decrement time remaining on IO
 		ioQueues.updateTimeRemaining();
 
