@@ -9,10 +9,6 @@
 
 using namespace std;
 
-Scheduler::Scheduler(){
-	mAlpha = 0.7;
-}
-
 void Scheduler::setQuantumTime(int qt){
 	if( qt < 1 ){
 		mQuantumTime = 1;

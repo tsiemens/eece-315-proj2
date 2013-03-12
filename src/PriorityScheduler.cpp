@@ -4,10 +4,11 @@
 using namespace std;
 
 
-PriorityScheduler::PriorityScheduler(int quantumTime, bool doesInterrupt) {
-
+PriorityScheduler::PriorityScheduler(int quantumTime, bool doesInterrupt, bool doesTimeSlice) {
+	mDoesTimeSlice = doesTimeSlice;
 	mQuantumTime = quantumTime;
 	mDoesInterrupt = doesInterrupt;
+	mAlpha = 0;
 }
 
 // Returns the PCB with the highest priority

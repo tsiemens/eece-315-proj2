@@ -15,9 +15,6 @@ using namespace std;
 
 class Scheduler{
 
-	//Default Constructor
-protected: Scheduler();
-
 public:
 	/* Selects the next process to be run in the CPU
 	 * @return: pointer to the process to be run next.

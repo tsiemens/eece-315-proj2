@@ -29,12 +29,17 @@ Scheduler* SchedulerFactory::makeScheduler(int algIndex, int quantumTime, double
 		}
 		case PPP:{
 			// Premptive Priority Polite
-			scheduler = new PriorityScheduler(quantumTime, false);
+			scheduler = new PriorityScheduler(quantumTime, false, true);
 			break;
 		}
 		case IPP:{
 			// Premptive Priority Impolite
-			scheduler = new PriorityScheduler(quantumTime, true);
+			scheduler = new PriorityScheduler(quantumTime, true, true);
+			break;
+		}
+		case NPP:{
+			// Non Premptive Priority
+			scheduler = new PriorityScheduler(quantumTime, false, false);
 			break;
 		}
 		case SPB:{
@@ -42,6 +47,7 @@ Scheduler* SchedulerFactory::makeScheduler(int algIndex, int quantumTime, double
 			scheduler = new SPBScheduler(true, quantumTime, weightedAverage);
 			break;
 		}
+		
 		//Others here
 		default:
 			cout<<"Error occured getting algorithm"<<endl;
@@ -49,4 +55,3 @@ Scheduler* SchedulerFactory::makeScheduler(int algIndex, int quantumTime, double
 	}
 	return scheduler;
 }
-
