@@ -13,12 +13,11 @@ FirstScheduler::FirstScheduler(bool doesTimeSlice, int quantumTime){
 	mDoesTimeSlice = doesTimeSlice;
 	mDoesInterrupt = false;
 	mQuantumTime = quantumTime;
-	resetTimeSliceTimer();
 }
 
 PCB* FirstScheduler::schedule(ReadyQueue* q){
 	q->begin();
-	PCB* nextProcess = q->getNext();
+	PCB* nextProcess = q->getCurrent();
 	if(nextProcess != NULL){
 		q->remove(nextProcess);
 	}

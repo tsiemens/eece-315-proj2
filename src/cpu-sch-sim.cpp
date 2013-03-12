@@ -6,7 +6,7 @@
  */
 
 #include<iostream>
-#include<unistd.h>
+#include<sstream>
 #include<fstream>
 #include<string>
 #include<vector>
@@ -17,6 +17,7 @@
 #include "ReadyQueue.h"
 #include "IOQueues.h"
 #include "CPU.h"
+#include "Logger.h"
 
 
 int main(){
@@ -35,31 +36,11 @@ int main(){
 	ReadyQueue readyQueue;
 	IOQueues ioQueues;
 	PCB* doneIO;
-
-	//Setting up log file
-	char dirBuffer[1024];
-	string logFileName;
-	ssize_t dirLen = readlink("/proc/self/exe", dirBuffer, sizeof(dirBuffer)-1);
-
-	if (dirLen != -1) {
-		dirBuffer[dirLen] = '\0';
-		logFileName = string(dirBuffer);
-	} else {
-		cout << "ERROR: could not open log file"<<endl;
-		return 1;
-	}
-
-	while(logFileName[logFileName.size()-1] != '/'){
-		logFileName.pop_back();
-	}
-
-	logFileName += "actions.log";
-	ofstream logFile (logFileName);
-
-	if( !logFile.is_open() ){
-		cout << "ERROR: could not open log file"<<endl;
-		return 1;
-	}	
+	
+	//Logger stringstream
+	stringstream logss;
+	//The action logger
+	Logger actLog("actions.log");
 	
 	cout<<"Please enter workload file name: ";
 	/* for testing smoothness
@@ -95,8 +76,9 @@ int main(){
 		for(unsigned int i = 0; i < processes.size();i++){
 			if(processes[i]->getTARQ() == time){
 				readyQueue.insert(processes[i]);
-				logFile<<"Start: PID "<<processes[i]->getPID()
+				logss<<"Start: PID "<<processes[i]->getPID()
 					<<" @ time: "<<time<<endl;					//LOG
+				actLog.log(logss);
 			}
 		}
 	
@@ -105,8 +87,9 @@ int main(){
 			doneIO= ioQueues.removeReadyProcess();
 			while(doneIO != NULL){
 				readyQueue.insert(doneIO);
-				logFile<<"Done IO: PID "<<doneIO->getPID()
+				logss<<"Done IO: PID "<<doneIO->getPID()
 					<<" @ time:"<<time<<endl;				//LOG
+				actLog.log(logss);
 				doneIO = ioQueues.removeReadyProcess();
 			}	
 		}
@@ -115,23 +98,26 @@ int main(){
 		if(simCPU.getProcess() != NULL){ 
 			//Process has finished
 			if(	simCPU.getProcess()->isDone() ){
-				logFile<<"Process finished: PID "
+				logss<<"Process finished: PID "
 					<<simCPU.getProcess()->getPID()
 					<<" @ time:"<<time<<endl;				//LOG
+				actLog.log(logss);
 				simCPU.setProcess(NULL);
 			//Process needs IO
 			}else if( simCPU.getProcess()->getCurrentBurst() % 2 != 0 ){
 				ioQueues.insert(simCPU.getProcess());
-				logFile<<"Done CPU burst: PID "
+				logss<<"Done CPU burst: PID "
 					<<simCPU.getProcess()->getPID()
 					<<" @ time:"<<time<<endl;				//LOG
+				actLog.log(logss);
 				simCPU.setProcess(NULL);
 			//Time slice has expired
 			} else if( scheduler->doesTimeSlice() && 
 			simCPU.getBurstDuration() == scheduler->getQuantumTime()){
 				readyQueue.insert(simCPU.getProcess());
-				logFile<<"Time slice: PID "<<simCPU.getProcess()->getPID()
+				logss<<"Time slice: PID "<<simCPU.getProcess()->getPID()
 					<<" @ time:"<<time<<endl;				//LOG
+				actLog.log(logss);
 				simCPU.setProcess(NULL);
 			}
 		//If there are interrupts, preempt with higher priority process
@@ -142,8 +128,9 @@ int main(){
 				readyQueue.insert(simCPU.getProcess());
 				simCPU.setProcess(impatientProcess);
 
-				logFile<<"Interrupt: PID "<<impatientProcess->getPID()
+				logss<<"Interrupt: PID "<<impatientProcess->getPID()
 					<<" @ time:"<<time<<endl;				//LOG
+				actLog.log(logss);
 			} else {
 				readyQueue.insert(impatientProcess);
 			}
@@ -152,7 +139,8 @@ int main(){
 		//Put process into cpu if cpu is empty
 		if((simCPU.getProcess() == NULL) && (readyQueue.getSize() != 0)){
 			simCPU.setProcess(scheduler->schedule(&readyQueue));
-			logFile<<"Next process in CPU @ time:"<<time<<endl;		//LOG
+			logss<<"Next process in CPU @ time:"<<time<<endl;		//LOG
+			actLog.log(logss);
 		}
 
 		//Increment wait time on ready queue
@@ -164,12 +152,15 @@ int main(){
 		//Decrement time remaining on IO
 		ioQueues.updateTimeRemaining();
 
-		for(unsigned int i = 0; i< processes.size();i++){
-			if(!(processes[i]->isDone()))
-				break;
-			else if(i == (processes.size() - 1))
-				allProcessesDone = true;
-		}	
+		//Check if processes are all done, and CPU has been emptied
+		if(simCPU.getProcess() == NULL){
+			for(unsigned int i = 0; i< processes.size();i++){
+				if(!(processes[i]->isDone()))
+					break;
+				else if(i == (processes.size() - 1))
+					allProcessesDone = true;
+			}	
+		}
 
 		time++;
 	}				
@@ -177,6 +168,5 @@ int main(){
 	for(unsigned int i=0; i< processes.size();i++)
 		delete processes[i];	
 
-	logFile.close();
 	return 0;
 }

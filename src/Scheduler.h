@@ -44,16 +44,6 @@ public:
 	 */
 	double getAlpha();
 
-
-	/* Sets the time slice timer back to the quantum time
-	 */
-	void resetTimeSliceTimer();
-
-	/* Decrements the time slice timer, then returns the value.
-	 * @return: the time remaining in the time slice
-	 */
-	int decTimeSliceTimer();
-
 	/* @return: does the scheduler perform time slices
 	 */
 	bool doesTimeSlice();

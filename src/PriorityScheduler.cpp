@@ -8,7 +8,6 @@ PriorityScheduler::PriorityScheduler(int quantumTime, bool doesInterrupt) {
 
 	mQuantumTime = quantumTime;
 	mDoesInterrupt = doesInterrupt;
-	resetTimeSliceTimer();
 }
 
 // Returns the PCB with the highest priority
@@ -21,9 +20,10 @@ PCB* PriorityScheduler::schedule(ReadyQueue* q) {
 	while (currentProcess != NULL) {
 		if ( currentProcess->getPriority() > selectedProcess->getPriority() ) {
 			selectedProcess = q->getCurrent();
-		}
+		}		
 		currentProcess = q->getNext();
 	}
+	q->remove(selectedProcess);
 	return selectedProcess;
 }
 
