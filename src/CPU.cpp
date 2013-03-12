@@ -27,6 +27,9 @@ int CPU::getBurstDuration(){
 }
 
 void CPU::decPCBTime(){
+		if(mProcess == NULL){
+			return;
+		}
         int TimeRemInBurst = mProcess->getTimeRemInBurst();
         if(TimeRemInBurst == 0){
                 return;
