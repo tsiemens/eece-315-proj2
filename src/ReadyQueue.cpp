@@ -22,10 +22,10 @@ void ReadyQueue::begin() {
 
 // get next PCB in ready queue. If none, return NULL;
 PCB* ReadyQueue::getNext() {
+	i++;
 	if (mQueue.empty() || i == mQueue.end()) {
 		return NULL;
 	}
-	i++;
 	PCB* process = *i;
 	
 	return process;
