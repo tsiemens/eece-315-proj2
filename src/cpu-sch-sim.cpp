@@ -181,7 +181,7 @@ int main(){
 		time++;
 	}				
 
-	//delete scheduler;
+	delete scheduler;
 	for(unsigned int i=0; i< processes.size();i++)
 		delete processes[i];	
 

@@ -25,7 +25,7 @@ class FirstScheduler: public Scheduler{
 		 * @param: quantumTime - quantum time, defaulted to DOES_NOT_TIME_SLICE  
 		 */
 		FirstScheduler(bool doesTimeSlice, int quantumTime = DOES_NOT_TIME_SLICE);
-
+		
 		/* Selects the next process to be run in the CPU
 		 * Uses the First In First Out / Round robin algorithms.
 		 * @return: pointer to the process to be run next
