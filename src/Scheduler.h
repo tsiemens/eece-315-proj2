@@ -16,6 +16,9 @@ using namespace std;
 class Scheduler{
 
 public:
+	//destructor
+	virtual ~Scheduler();
+
 	/* Selects the next process to be run in the CPU
 	 * @return: pointer to the process to be run next.
 	 *          should return NULL if the queue is empty.
