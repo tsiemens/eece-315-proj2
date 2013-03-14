@@ -12,6 +12,7 @@ using namespace std;
 
 Logger::Logger(string filename){
 	mStreamOK = true;
+	mTime = 0;
 	string filePath = getFileDir();
 	if(filePath.empty()){
 		mStreamOK = false;
@@ -33,6 +34,86 @@ void Logger::log(stringstream& ss){
 	}
 	mLogFile << ss.str();
 	ss.str("");
+}
+
+
+void Logger::logCreateProcess(PCB* process) {
+	if(!mLogFile || !mStreamOK){
+		return;
+	}
+	mLogss<<"Time "<<mTime<<"\t:: Creating PID "<<process->getPID() <<endl;
+	mLogFile<<mLogss.str();
+	mLogss.str("");
+}
+
+void Logger::logDoneIoBurst(PCB* process) {
+	if(!mLogFile || !mStreamOK){
+		return;
+	}
+	mLogss<<"Time "<<mTime<<"\t:: PID "<<process->getPID()<<
+		" finished IO Burst #"<<process->getCurrentBurst() - 1<<
+		" - Sending to Ready Queue"<<endl;
+	mLogFile<<mLogss.str();
+	mLogss.str("");
+}
+
+void Logger::logDoneCPUBurst(PCB* process) {
+	if(!mLogFile || !mStreamOK){
+		return;
+	}
+	mLogss<<"Time "<<mTime<<"\t:: PID "<<process->getPID()<<
+		" finished CPU Burst #"<<process->getCurrentBurst() - 1<<
+		" - Sending to IO Queue"<<endl;
+	mLogFile<<mLogss.str();
+	mLogss.str("");
+}
+
+void Logger::logProcessFinished(PCB* process) {
+	if(!mLogFile || !mStreamOK){
+		return;
+	}
+	mLogss<<"Time "<<mTime<<"\t:: PID "<<process->getPID()<<
+		" finished executing"<<endl;
+	mLogFile<<mLogss.str();
+	mLogss.str("");
+}
+
+void Logger::logTimeSlice(PCB* process) {
+	if(!mLogFile || !mStreamOK){
+		return;
+	}
+	mLogss<<"Time "<<mTime<<"\t:: PID "<<process->getPID()<<
+		" finished given time slice - Inserting back into Ready Queue"<<endl;
+	mLogFile<<mLogss.str();
+	mLogss.str("");
+}
+
+void Logger::logInterrupt(PCB* higherProcess, PCB* lowerProcess) {
+	if(!mLogFile || !mStreamOK){
+		return;
+	}
+	mLogss<<"Time "<<mTime<<"\t:: INTERRUPT :: PID "<<
+	lowerProcess->getPID()<<" (priority "<<lowerProcess->getPriority()
+	<<") in the Ready Queue has replaced PID "<<
+	higherProcess->getPID()<<" (priority "<<
+	higherProcess->getPriority()<<") in the CPU"<<endl;
+	mLogFile<<mLogss.str();
+	mLogss.str("");
+}
+
+void Logger::logNextProcess(PCB* process) {
+	if(!mLogFile || !mStreamOK){
+		return;
+	}
+	mLogss<<"Time "<<mTime<<"\t:: PID "<<process->getPID()<<
+		" (priority "<<process->getPriority()<<") has been placed"
+		" in the CPU"<<endl;
+	mLogFile<<mLogss.str();
+	mLogss.str("");
+}
+
+void Logger::incTime(){
+	mTime++;
 }
 
 

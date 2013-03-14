@@ -11,6 +11,7 @@
 #include<iostream>
 #include<sstream>
 #include<fstream>
+#include"PCB.h"
 
 using namespace std;
 
@@ -26,6 +27,16 @@ class Logger{
 		//Logs the string in the log file
 		void log(stringstream& ss);
 
+		void logCreateProcess(PCB* process);
+		void logDoneIoBurst(PCB* process);
+		void logDoneCPUBurst(PCB* process);
+		void logProcessFinished(PCB* process);
+		void logTimeSlice(PCB* process);
+		void logInterrupt(PCB* higherProcess, PCB* lowerProcess);
+		void logNextProcess(PCB* process);
+		
+		void incTime();
+
 	private:
 		/*@return: the root file path for the log.
 		 *         is the same dir as the executable.
@@ -37,5 +48,7 @@ class Logger{
 
 		ofstream mLogFile;
 		bool mStreamOK;
+		int mTime;
+		stringstream mLogss;
 };
 #endif
