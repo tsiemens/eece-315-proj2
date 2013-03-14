@@ -17,7 +17,7 @@ class ReadyQueue{
 
 	public:
 		//	@Input: PCB to be added to ready Queue
-		void insert(PCB* process);
+		void insert(PCB* process, bool resetPriority);
 
 		// initialize iterator 
 		void begin();

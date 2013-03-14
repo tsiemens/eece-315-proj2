@@ -5,7 +5,7 @@ CXX := g++
 EXECUTABLE := cpu-sch-sim 
 
 #Compiler Flags
-CFLAGS := -std=c++0x -Wall
+CFLAGS := -g -std=c++0x -Wall
 
 #Linker Flags
 LDFLAGS := -g
