@@ -5,7 +5,7 @@ CXX := g++
 EXECUTABLE := cpu-sch-sim 
 
 #Compiler Flags
-CFLAGS := -std=c++0x -Wall
+CFLAGS := -g -std=c++0x -Wall
 
 #Linker Flags
 LDFLAGS := -g
@@ -30,7 +30,7 @@ $(addprefix bin/, $(EXECUTABLE)) : $(OBJ)
 obj/%.o : src/%.cpp
 	echo "	CXX	$<"
 	mkdir -p obj/
-	$(CXX) -g $(CFLAGS) -o $@ -c -MMD -MP $<
+	$(CXX) $(CFLAGS) -o $@ -c -MMD -MP $<
 
 #include dependency files
 -include $(patsubst src/%.cpp, obj/%.d, $(SRC))  
