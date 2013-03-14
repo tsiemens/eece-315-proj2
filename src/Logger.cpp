@@ -48,7 +48,7 @@ string Logger::getFileDir(){
 		return NULL;
     }
 	while(fileDir[fileDir.size()-1] != '/'){
-		fileDir.pop_back();
+		fileDir = fileDir.substr(0, fileDir.size() - 1);
 	}
 	return fileDir;
 }
