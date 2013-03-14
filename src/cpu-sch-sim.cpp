@@ -85,9 +85,7 @@ int main(){
 		for(unsigned int i = 0; i < processes.size();i++){
 			if(processes[i]->getTARQ() == time){
 				readyQueue.insert(processes[i], true);
-				logss<<"Starting PID "<<processes[i]->getPID()
-					<<" @ time: "<<time<<endl;					//LOG
-				actLog.log(logss);
+				actLog.logCreateProcess(processes[i]);
 			}
 		}
 	
@@ -96,9 +94,7 @@ int main(){
 			doneIO= ioQueues.removeReadyProcess();
 			while(doneIO != NULL){
 				readyQueue.insert(doneIO, true);
-				logss<<"Done IO Burst: PID "<<doneIO->getPID()
-					<<"\tInserting into Ready Queue @ time:"<<time<<endl;				//LOG
-				actLog.log(logss);
+				actLog.logDoneIoBurst(doneIO);
 				doneIO = ioQueues.removeReadyProcess();
 			}	
 		}
@@ -107,10 +103,7 @@ int main(){
 		if(simCPU.getProcess() != NULL){ 
 			//Process has finished
 			if(	simCPU.getProcess()->isDone() ){
-				logss<<"Process finished: PID "
-					<<simCPU.getProcess()->getPID()
-					<<" @ time:"<<time<<endl;				//LOG
-				actLog.log(logss);
+				actLog.logProcessFinished(simCPU.getProcess());
 				simCPU.setProcess(NULL);
 			//Process needs IO
 			//Reset priority
@@ -118,10 +111,7 @@ int main(){
 				ioQueues.insert(simCPU.getProcess());
 				simCPU.getProcess()->resetRelPriority();
 				simCPU.getProcess()->updateAvPrevBurst(simCPU.getBurstDuration(), scheduler->getAlpha());
-				logss<<"Done CPU burst: PID "
-					<<simCPU.getProcess()->getPID()
-					<<"\tInserting into IO Queue @ time:"<<time<<endl;				//LOG
-				actLog.log(logss);
+				actLog.logDoneCPUBurst(simCPU.getProcess());
 				simCPU.setProcess(NULL);
 			//Time slice has expired
 			//Reset priority
@@ -130,20 +120,14 @@ int main(){
 				readyQueue.insert(simCPU.getProcess(), true);
 				simCPU.getProcess()->resetRelPriority();
 				simCPU.getProcess()->updateAvPrevBurst(simCPU.getBurstDuration(), scheduler->getAlpha());
-				logss<<"Time slice: PID "<<simCPU.getProcess()->getPID()
-					<<"\tInserting in Ready Queue @ time:"<<time<<endl;	//LOG
-				actLog.log(logss);
+				actLog.logTimeSlice(simCPU.getProcess());
 				simCPU.setProcess(NULL);
 
 				//If there are interrupts, preempt with higher priority process
 			} else if ( scheduler->doesInterrupt() && readyQueue.getSize() != 0 ){
 			PCB* impatientProcess = scheduler->schedule(&readyQueue);
 				if(	impatientProcess->getPriority() > simCPU.getProcess()->getPriority() ){
-					logss<<"Interrupt: PID "<<impatientProcess->getPID()
-						<<" (priority "<<impatientProcess->getPriority()<<
-						") in the Ready Queue is replacing the current PID "<<simCPU.getProcess()->getPID()
-						<<" (priority "<<simCPU.getProcess()->getPriority()<<") in the CPU @ time:"<<time<<endl;	//LOG
-					actLog.log(logss);
+					actLog.logInterrupt(impatientProcess, simCPU.getProcess());
 					readyQueue.insert(simCPU.getProcess(), true);
 					// Do we need this? simCPU.getProcess()->resetRelPriority();
 					simCPU.getProcess()->updateAvPrevBurst(simCPU.getBurstDuration(), scheduler->getAlpha());
@@ -158,10 +142,7 @@ int main(){
 		//Put process into cpu if cpu is empty
 		if((simCPU.getProcess() == NULL) && (readyQueue.getSize() != 0)){
 			simCPU.setProcess(scheduler->schedule(&readyQueue));
-			logss<<"Next PID "<<simCPU.getProcess()->getPID()<<
-			" (priority "<<simCPU.getProcess()->getPriority()<<
-			") placed in CPU @ time:"<<time<<endl;		//LOG
-			actLog.log(logss);
+			actLog.logNextProcess(simCPU.getProcess());
 		}
 
 		//Increment wait time on ready queue
@@ -184,8 +165,9 @@ int main(){
 		}
 
 		time++;
+		actLog.incTime();
 	}				
-	logss<<"All Process completed @ time:"<<time<<endl;		//LOG
+	logss<<"Time "<<time<<"\t:: All Processes completed"<<endl;		//LOG
 	actLog.log(logss);
 	delete scheduler;
 	for(unsigned int i=0; i< processes.size();i++)
