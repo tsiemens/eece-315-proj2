@@ -49,7 +49,7 @@ int main(){
 		cin>>filename;
 	}while(!(WorkloadParser::validFileName(filename)));
 	*/
-	filename = "workloads/testWorkload1.txt";
+	filename = "workloads/testWorkload2.txt";
 	processes = parser.parseWorkload(filename);
 
 	//Get the algorithm to be used
@@ -71,10 +71,10 @@ int main(){
 
 	if(algorithmIndex == SPB){
 		do{
-			cout<<"Please enter a value for the weighted average:";
+			cout<<"Please enter a value from 0 to 1 for the weighted average:";
 			cin>>weightedAverage;
 		
-		}while(weightedAverage <= 0);
+		}while(weightedAverage <= 0 || weightedAverage >= 1);
 	}
 
 	scheduler = schFactory.makeScheduler(algorithmIndex, quantumTime, weightedAverage);
@@ -84,8 +84,8 @@ int main(){
 		//Insert any newly arrived processes
 		for(unsigned int i = 0; i < processes.size();i++){
 			if(processes[i]->getTARQ() == time){
-				readyQueue.insert(processes[i]);
-				logss<<"Start: PID "<<processes[i]->getPID()
+				readyQueue.insert(processes[i], true);
+				logss<<"Starting PID "<<processes[i]->getPID()
 					<<" @ time: "<<time<<endl;					//LOG
 				actLog.log(logss);
 			}
@@ -95,9 +95,9 @@ int main(){
 		if(ioQueues.getSize() != 0){
 			doneIO= ioQueues.removeReadyProcess();
 			while(doneIO != NULL){
-				readyQueue.insert(doneIO);
-				logss<<"Done IO: PID "<<doneIO->getPID()
-					<<" @ time:"<<time<<endl;				//LOG
+				readyQueue.insert(doneIO, true);
+				logss<<"Done IO Burst: PID "<<doneIO->getPID()
+					<<"\tInserting into Ready Queue @ time:"<<time<<endl;				//LOG
 				actLog.log(logss);
 				doneIO = ioQueues.removeReadyProcess();
 			}	
@@ -120,42 +120,47 @@ int main(){
 				simCPU.getProcess()->updateAvPrevBurst(simCPU.getBurstDuration(), scheduler->getAlpha());
 				logss<<"Done CPU burst: PID "
 					<<simCPU.getProcess()->getPID()
-					<<" @ time:"<<time<<endl;				//LOG
+					<<"\tInserting into IO Queue @ time:"<<time<<endl;				//LOG
 				actLog.log(logss);
 				simCPU.setProcess(NULL);
 			//Time slice has expired
 			//Reset priority
 			} else if( scheduler->doesTimeSlice() && 
 			simCPU.getBurstDuration() == scheduler->getQuantumTime()){
-				readyQueue.insert(simCPU.getProcess());
+				readyQueue.insert(simCPU.getProcess(), true);
 				simCPU.getProcess()->resetRelPriority();
 				simCPU.getProcess()->updateAvPrevBurst(simCPU.getBurstDuration(), scheduler->getAlpha());
 				logss<<"Time slice: PID "<<simCPU.getProcess()->getPID()
-					<<" @ time:"<<time<<endl;				//LOG
+					<<"\tInserting in Ready Queue @ time:"<<time<<endl;	//LOG
 				actLog.log(logss);
 				simCPU.setProcess(NULL);
-			}
-		//If there are interrupts, preempt with higher priority process
-		} else if ( scheduler->doesInterrupt() ){
-			PCB* impatientProcess = scheduler->schedule(&readyQueue);
-			if( impatientProcess->getPriority() > 
-					simCPU.getProcess()->getPriority() ){
-				readyQueue.insert(simCPU.getProcess());
-				simCPU.getProcess()->updateAvPrevBurst(simCPU.getBurstDuration(), scheduler->getAlpha());
-				simCPU.setProcess(impatientProcess);
 
-				logss<<"Interrupt: PID "<<impatientProcess->getPID()
-					<<" @ time:"<<time<<endl;				//LOG
-				actLog.log(logss);
-			} else {
-				readyQueue.insert(impatientProcess);
+				//If there are interrupts, preempt with higher priority process
+			} else if ( scheduler->doesInterrupt() && readyQueue.getSize() != 0 ){
+			PCB* impatientProcess = scheduler->schedule(&readyQueue);
+				if(	impatientProcess->getPriority() > simCPU.getProcess()->getPriority() ){
+					logss<<"Interrupt: PID "<<impatientProcess->getPID()
+						<<" (priority "<<impatientProcess->getPriority()<<
+						") in the Ready Queue is replacing the current PID "<<simCPU.getProcess()->getPID()
+						<<" (priority "<<simCPU.getProcess()->getPriority()<<") in the CPU @ time:"<<time<<endl;	//LOG
+					actLog.log(logss);
+					readyQueue.insert(simCPU.getProcess(), true);
+					// Do we need this? simCPU.getProcess()->resetRelPriority();
+					simCPU.getProcess()->updateAvPrevBurst(simCPU.getBurstDuration(), scheduler->getAlpha());
+					simCPU.setProcess(impatientProcess);
+
+				
+				} else {
+					readyQueue.insert(impatientProcess, false);
+				}
 			}
 		}
-
 		//Put process into cpu if cpu is empty
 		if((simCPU.getProcess() == NULL) && (readyQueue.getSize() != 0)){
 			simCPU.setProcess(scheduler->schedule(&readyQueue));
-			logss<<"Next process in CPU @ time:"<<time<<endl;		//LOG
+			logss<<"Next PID "<<simCPU.getProcess()->getPID()<<
+			" (priority "<<simCPU.getProcess()->getPriority()<<
+			") placed in CPU @ time:"<<time<<endl;		//LOG
 			actLog.log(logss);
 		}
 
@@ -180,7 +185,8 @@ int main(){
 
 		time++;
 	}				
-
+	logss<<"All Process completed @ time:"<<time<<endl;		//LOG
+	actLog.log(logss);
 	delete scheduler;
 	for(unsigned int i=0; i< processes.size();i++)
 		delete processes[i];	
