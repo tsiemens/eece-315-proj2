@@ -10,6 +10,7 @@
 #include<fstream>
 #include<string>
 #include<vector>
+#include<limits>
 #include "PCB.h"
 #include "WorkloadParser.h"
 #include "Scheduler.h"
@@ -57,15 +58,24 @@ int main(){
 		      <<"\t"<<"4) Impatient Premptive Priority"<<endl
 			  <<"\t"<<"5) Non Premprive Priority   6) SJF   7) SPB"<<endl<<endl;
 
-	while( algorithmIndex < FCFS || algorithmIndex > SPB ){
+
+	while(algorithmIndex < FCFS || algorithmIndex > SPB){
 		cout<<"Select scheduling algorithm:";
-		cin>>algorithmIndex;
+		while(!(cin>>algorithmIndex)){
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');	
+			cout<<"Select scheduling algorithm:";
+		}
 	}
 
 	if( algorithmIndex != FCFS && algorithmIndex != NPP){
 		while( quantumTime <= 0 ){
 			cout<<"Please enter a value for quantum time:";
-			cin>>quantumTime;
+			while(!(cin>>quantumTime)){
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');	
+				cout<<"Please enter a value for quantum time:";
+			}
 		}
 	}
 
