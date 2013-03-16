@@ -40,7 +40,7 @@ class Logger{
 
 	private:
 		/*@return: the root file path for the log.
-		 *         is the same dir as the executable.
+		 *         is in log/ dir from root of project.
 		 */
 		string getFileDir();
 
