@@ -8,7 +8,7 @@
 #include "SJFScheduler.h"
 
 SJFScheduler::SJFScheduler(bool doesTimeSlice, int quantumTime){
-	mDoesTimeSlice = doesTimesSlice;
+	mDoesTimeSlice = doesTimeSlice;
 	mQuantumTime = quantumTime;
 	mDoesInterrupt = false;
 }
@@ -22,7 +22,7 @@ PCB* SJFScheduler::schedule(ReadyQueue* q){
 
 	//Intially set current and selected processes to the current process
 	currentProcess = q->getCurrent();
-	selectedProcss = q->getCurrent();
+	selectedProcess = q->getCurrent();
 
 	//Iterate through the ready queue and find the shortest process
 	while(currentProcess != NULL){

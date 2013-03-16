@@ -8,6 +8,7 @@
 #include "SchedulerFactory.h"
 #include "FirstScheduler.h"
 #include "PriorityScheduler.h"
+#include "SJFScheduler.h"
 #include "SPBScheduler.h"
 #include <iostream>
 
