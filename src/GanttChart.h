@@ -29,7 +29,6 @@ class GanttChart{
 		 */
 		void ganttTableHeader(vector<PCB*> processes);
 
-		/*Total waiting time for each process - Total execution time for each process - Average waiting time for the total set of process - Throughput for the total set of processes - The turnaround for the total set of processes*/
 		stringstream mSS;	
 		const string logFile = "metrics.log";
 		Logger mLogger;
