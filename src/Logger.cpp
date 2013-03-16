@@ -131,6 +131,12 @@ string Logger::getFileDir(){
 	while(fileDir[fileDir.size()-1] != '/'){
 		fileDir = fileDir.substr(0, fileDir.size() - 1);
 	}
+	fileDir = fileDir.substr(0, fileDir.size() - 1);
+	while(fileDir[fileDir.size()-1] != '/'){
+		fileDir = fileDir.substr(0, fileDir.size() - 1);
+	}
+	fileDir += "log/";
+
 	return fileDir;
 }
 
