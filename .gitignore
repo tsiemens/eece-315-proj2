@@ -20,3 +20,4 @@
 #Objects and binaries
 bin/
 obj/
+log/

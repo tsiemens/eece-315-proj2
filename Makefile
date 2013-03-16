@@ -22,7 +22,7 @@ OBJ := $(subst src/, obj/, $(SRC:.cpp=.o))
 #Rule to link executable
 $(addprefix bin/, $(EXECUTABLE)) : $(OBJ)
 	echo "	LD	$@"
-	mkdir -p bin/
+	mkdir -p bin/ log/
 	$(CXX) $(LDFLAGS) -o $@ $(OBJ)
 	echo "Build Succeeded"
 
@@ -38,4 +38,4 @@ obj/%.o : src/%.cpp
 #Rule to clean generated files
 .PHONY : clean
 clean  :
-	$(RM) -r bin/ obj/
+	$(RM) -r bin/ obj/ log/

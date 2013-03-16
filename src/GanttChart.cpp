@@ -1,30 +1,47 @@
+/* GanttChart.cpp
+ * Outputs the gantt chart and metrics
+ *
+ * EECE 315
+ * Group BB4
+ */
+
 #include "GanttChart.h"
 #include<iostream>
+
+GanttChart::GanttChart() 
+	: mLogger(this->logFile) {}
 
 void GanttChart::ganttTableHeader(vector<PCB*> processes){
 	for(unsigned int i = 0; i<processes.size(); i++)
 		PIDs.push_back(processes[i]->getPID());
 }
 
-void GanttChart::draw(){
-	cout<<endl<<endl<<"Gantt Chart:"<<endl;
-	cout<<"\t";
+void GanttChart::draw(vector<PCB*> processes){
+	ganttTableHeader(processes);
+
+	mSS<<endl<<endl<<"Gantt Chart:"<<endl;
+	mSS<<"\t";
 
 	for(unsigned int i = 0; i<PIDs.size(); i++)
-		cout<<"PID:"<<PIDs[i]<<"\t";
-	cout<<endl;
+		mSS<<"PID:"<<PIDs[i]<<"\t";
+	mSS<<endl;
 
 	for(unsigned int i = 0; i<cpuPIDs.size(); i++){
-		cout<<"\t";
+		mSS<<"\t";
 		for(unsigned int j = 0; j<PIDs.size(); j++){
 			if(PIDs[j] == cpuPIDs[i])
-				cout<<"  X"<<"\t";
+				mSS<<"  X"<<"\t";
 			else
-				cout<<"  |"<<"\t";
+				mSS<<"  |"<<"\t";
 		}
-		cout<<endl;
+		mSS<<endl;
 	}
-	cout<<endl;	
+	mSS<<endl;
+	cout<<mSS.str();
+	mLogger.log(mSS);
+	
+	cout<<"Gantt Chart and metrics can also be viewed in log/"
+		<<logFile<<endl;	
 }
 
 void GanttChart::recordPID(PCB* process){

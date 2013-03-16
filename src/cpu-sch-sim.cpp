@@ -53,9 +53,6 @@ int main(){
 	filename = "workloads/testWorkload1.txt";
 	processes = parser.parseWorkload(filename);
 
-	//Store the process pids, they will be used as a header for the gantt chart
-	ganttChart.ganttTableHeader(processes);
-
 	//Get the algorithm to be used
 	cout<<endl<<"\t"<<"1) FCFS   2) RR   3) Polite Premptive Priority"<<endl
 		      <<"\t"<<"4) Impatient Premptive Priority"<<endl
@@ -192,7 +189,7 @@ int main(){
 	actLog.logDone(time);
 
 	//Draw the Gantt Chart
-	ganttChart.draw();
+	ganttChart.draw(processes);
 
 	delete scheduler;
 	for(unsigned int i=0; i< processes.size();i++)
