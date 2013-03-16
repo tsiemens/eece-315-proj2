@@ -19,6 +19,7 @@
 #include "IOQueues.h"
 #include "CPU.h"
 #include "Logger.h"
+#include "GanttChart.h"
 
 
 int main(){
@@ -38,9 +39,8 @@ int main(){
 	ReadyQueue readyQueue;
 	IOQueues ioQueues;
 	PCB* doneIO;
+	GanttChart ganttChart;
 	
-	//Logger stringstream
-	stringstream logss;
 	//The action logger
 	Logger actLog("actions.log");
 	
@@ -50,8 +50,11 @@ int main(){
 		cin>>filename;
 	}while(!(WorkloadParser::validFileName(filename)));
 	*/
-	filename = "workloads/testWorkload2.txt";
+	filename = "workloads/testWorkload1.txt";
 	processes = parser.parseWorkload(filename);
+
+	//Store the process pids, they will be used as a header for the gantt chart
+	ganttChart.ganttTableHeader(processes);
 
 	//Get the algorithm to be used
 	cout<<endl<<"\t"<<"1) FCFS   2) RR   3) Polite Premptive Priority"<<endl
@@ -81,12 +84,16 @@ int main(){
 
 	if(algorithmIndex == SPB){
 		do{
-			cout<<"Please enter a value from 0 to 1 for the weighted average:";
-			cin>>weightedAverage;
-		
+			cout<<"Please enter a value between 0 and 1 for the weighted average:";
+			while(!(cin>>weightedAverage)){
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');	
+				cout<<"Please enter a value between 0 and 1 for the weighted average:";
+			}
 		}while(weightedAverage <= 0 || weightedAverage >= 1);
 	}
 
+	//Create scheduler algorithm object selected by user
 	scheduler = schFactory.makeScheduler(algorithmIndex, quantumTime, weightedAverage);
 
 	//Main running loop. Time begins to flow here.
@@ -155,6 +162,9 @@ int main(){
 			actLog.logNextProcess(simCPU.getProcess());
 		}
 
+		//record PID of process in cpu for Gantt chart
+		ganttChart.recordPID(simCPU.getProcess()); 
+
 		//Increment wait time on ready queue
 		readyQueue.update();
 
@@ -176,9 +186,14 @@ int main(){
 
 		time++;
 		actLog.incTime();
-	}				
-	logss<<"Time "<<time<<"\t:: All Processes completed"<<endl;		//LOG
-	actLog.log(logss);
+	}		
+		
+	//Done Logging
+	actLog.logDone(time);
+
+	//Draw the Gantt Chart
+	ganttChart.draw();
+
 	delete scheduler;
 	for(unsigned int i=0; i< processes.size();i++)
 		delete processes[i];	

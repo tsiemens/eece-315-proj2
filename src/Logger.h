@@ -34,6 +34,7 @@ class Logger{
 		void logTimeSlice(PCB* process);
 		void logInterrupt(PCB* higherProcess, PCB* lowerProcess);
 		void logNextProcess(PCB* process);
+		void logDone(int time);
 		
 		void incTime();
 
