@@ -8,6 +8,7 @@
 #include "SchedulerFactory.h"
 #include "FirstScheduler.h"
 #include "PriorityScheduler.h"
+#include "SJFScheduler.h"
 #include "SPBScheduler.h"
 #include <iostream>
 
@@ -41,12 +42,18 @@ Scheduler* SchedulerFactory::makeScheduler(int algIndex, int quantumTime, double
 			// Non Premptive Priority
 			scheduler = new PriorityScheduler(quantumTime, false, false);
 			break;
+		}		
+		case SJF:{
+			//Shortest Job First
+			scheduler = new SJFScheduler(true, quantumTime);
+			break;
 		}
 		case SPB:{
 			//Shortest Previous Burst
 			scheduler = new SPBScheduler(true, quantumTime, weightedAverage);
 			break;
 		}
+
 		
 		//Others here
 		default:
