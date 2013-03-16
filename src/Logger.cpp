@@ -143,4 +143,14 @@ void Logger::setOFStream(string filename){
 	}
 }
 
+void Logger::logDone(int time){
+	if(!mLogFile || !mStreamOK){
+		return;
+	}
+	mLogss<<"Time "<<time<<"\t:: All Processes completed"<<endl;
+	mLogFile<<mLogss.str();
+	mLogss.str("");
+}
+
+
 
