@@ -190,6 +190,7 @@ int main(){
 
 	//Draw the Gantt Chart
 	ganttChart.draw(processes);
+	ganttChart.getMetrics(processes, time);
 
 	delete scheduler;
 	for(unsigned int i=0; i< processes.size();i++)
