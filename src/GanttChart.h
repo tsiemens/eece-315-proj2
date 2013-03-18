@@ -20,6 +20,9 @@ class GanttChart{
 		 */
 		void draw(vector<PCB*> processes);
 
+		// Display metrics to stdout and log file	
+		void getMetrics(vector<PCB*> processes, int time);
+
 		/* Record the current process in the CPU
 		 */
 		void recordPID(PCB* process);
@@ -30,7 +33,7 @@ class GanttChart{
 		void ganttTableHeader(vector<PCB*> processes);
 
 		stringstream mSS;	
-		const string logFile = "metrics.log";
+		const string logFile;
 		Logger mLogger;
 		vector<int> PIDs;
 		vector<int> cpuPIDs;

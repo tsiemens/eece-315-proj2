@@ -9,12 +9,39 @@
 #include<iostream>
 
 GanttChart::GanttChart() 
-	: mLogger(this->logFile) {}
+	: logFile("metrics.log"), mLogger(this->logFile) {}
 
 void GanttChart::ganttTableHeader(vector<PCB*> processes){
 	for(unsigned int i = 0; i<processes.size(); i++)
 		PIDs.push_back(processes[i]->getPID());
 }
+
+void GanttChart::getMetrics(vector<PCB*> processes, int time) {
+	float TAWT = 0;
+	mSS<<endl<<"Metrics:"<<endl<<endl;
+	mSS<<"Total waiting time for each process (CPU cycles):"<<endl;
+	for(unsigned int i = 0; i < processes.size(); i++) {
+		mSS<<"\tPID "<<PIDs.at(i)<<" : "<<processes.at(i)->getWaitTime()<<endl;
+		TAWT += processes.at(i)->getWaitTime();
+	}
+	TAWT /= processes.size();
+	mSS<<endl<<"Total execution time for each process (CPU cycles):"<<endl;
+	for(unsigned int i = 0; i < processes.size(); i++) {
+		mSS<<"\tPID "<<PIDs.at(i)<<" : "<<processes.at(i)->getTotalExecTime()<<endl;
+	}
+	mSS<<endl<<"Turnaround time for each process (CPU cycles):"<<endl;
+	for(unsigned int i = 0; i < processes.size(); i++){
+		mSS<<"\tPID "<<PIDs.at(i)<<" : "<<processes.at(i)->getTurnaroundTime()<<endl;
+	}
+	mSS<<endl<<"Average waiting time (CPU cyles):\t"<<TAWT<<endl;
+	mSS<<endl<<"Throughput (processes per CPU cycle):\t"<<processes.size()/(float)time<<endl;
+	mSS<<endl<<"Total turnaround time (CPU cycles):\t"<<time<<endl;
+	cout<<mSS.str();
+	mLogger.log(mSS);
+}
+
+
+	
 
 void GanttChart::draw(vector<PCB*> processes){
 	ganttTableHeader(processes);
