@@ -143,7 +143,6 @@ int main(){
 				if(	impatientProcess->getPriority() > simCPU.getProcess()->getPriority() ){
 					actLog.logInterrupt(impatientProcess, simCPU.getProcess());
 					readyQueue.insert(simCPU.getProcess(), true);
-					// Do we need this? simCPU.getProcess()->resetRelPriority();
 					simCPU.getProcess()->updateAvPrevBurst(simCPU.getBurstDuration(), scheduler->getAlpha());
 					simCPU.setProcess(impatientProcess);
 

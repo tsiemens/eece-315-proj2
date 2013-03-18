@@ -46,7 +46,7 @@ void ReadyQueue::update() {
 	for (i = mQueue.begin(); i != mQueue.end(); i++)
 	{
 		(*i)->incWaitTime();
-		(*i)->changeRelPriority(0);
+		(*i)->changeRelPriority(1);
 	}
 }
 
