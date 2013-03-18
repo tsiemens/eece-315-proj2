@@ -45,12 +45,11 @@ int main(){
 	Logger actLog("actions.log");
 	
 	cout<<"Please enter workload file name: ";
-	/* for testing smoothness
+
 	do{
 		cin>>filename;
 	}while(!(WorkloadParser::validFileName(filename)));
-	*/
-	filename = "workloads/testWorkload1.txt";
+	
 	processes = parser.parseWorkload(filename);
 
 	//Get the algorithm to be used
