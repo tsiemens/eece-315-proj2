@@ -9,7 +9,7 @@
 #include<iostream>
 
 GanttChart::GanttChart() 
-	: logFile("metrics.txt"), mLogger(this->logFile) {}
+	: logFile("metrics.log"), mLogger(this->logFile) {}
 
 void GanttChart::ganttTableHeader(vector<PCB*> processes){
 	for(unsigned int i = 0; i<processes.size(); i++)
