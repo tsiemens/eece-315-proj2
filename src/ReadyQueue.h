@@ -29,7 +29,10 @@ class ReadyQueue{
 		PCB* getCurrent();
 
 		// Updates PCB time variables
-		void update();
+		void updateWaitTime();
+
+		// Updates PCB relative priorities
+		void updatePriority();
 
 		//Removes pcb from the ready queue if it exists in the ready queue
 		void remove(PCB* pcb);
