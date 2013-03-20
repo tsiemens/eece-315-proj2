@@ -76,7 +76,9 @@ bool PCB::decTimeRemInBurst(){
 	mTimeRemInBurst--;
 	if( mTimeRemInBurst == 0 ){
 		mCurrentBurst++;
-		mTimeRemInBurst = mBursts[mCurrentBurst];
+		if ( (unsigned)mCurrentBurst < mBursts.size() ){
+			mTimeRemInBurst = mBursts.at(mCurrentBurst);
+		}
 		return true;	
 	}else{
 		return false;
