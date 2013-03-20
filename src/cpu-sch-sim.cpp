@@ -155,13 +155,14 @@ int main(){
 		if((simCPU.getProcess() == NULL) && (readyQueue.getSize() != 0)){
 			simCPU.setProcess(scheduler->schedule(&readyQueue));
 			actLog.logNextProcess(simCPU.getProcess());
+			readyQueue.updatePriority();
 		}
 
 		//record PID of process in cpu for Gantt chart
 		ganttChart.recordPID(simCPU.getProcess()); 
 
 		//Increment wait time on ready queue
-		readyQueue.update();
+		readyQueue.updateWaitTime();
 
 		//Decrement time remianing on CPU
 		simCPU.decPCBTime();

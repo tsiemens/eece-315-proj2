@@ -41,11 +41,17 @@ PCB* ReadyQueue::getCurrent() {
 }
 
 // update PCBs in update
-void ReadyQueue::update() {
+void ReadyQueue::updateWaitTime() {
 
 	for (i = mQueue.begin(); i != mQueue.end(); i++)
 	{
 		(*i)->incWaitTime();
+	}
+}
+
+void ReadyQueue::updatePriority() {
+	for (i = mQueue.begin(); i != mQueue.end(); i++)
+	{
 		(*i)->changeRelPriority(1);
 	}
 }
